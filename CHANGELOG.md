@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.0
+
+- `$sendora->inbound`: `search()` reads a page of the mail that the
+  server's inbound streams received, and `searchAll()` walks every page.
+  `get()` reads one message with its parties, headers, text and HTML.
+  `raw()` downloads the message byte for byte, and `attachment()` one of
+  its attachments.
+- `$sendora->inboundDomains`: `create()` claims a domain for an inbound
+  stream and returns the MX and TXT records to create. `verify()` looks
+  them up now, `list()` reads every domain, `get()` one, and `delete()`
+  removes one.
+- `InboundMessage`, `InboundMessageDetail`, `InboundPage`,
+  `InboundAddress`, `InboundAuthentication`, `InboundEnvelope`,
+  `InboundHeader`, `InboundMessageAttachment`, `InboundDomain`,
+  `VerifiedInboundDomain`, `InboundDomainList`, `InboundDomainCheck`,
+  `MxRecord`, `TxtRecord`, `SpfVerdict`, `AuthVerdict`, `DmarcPolicy`,
+  `ArcVerdict` and `RecordCheck` in `Sendora\Types`.
+
 ## 0.4.0
 
 - `$sendora->webhooks`: `create()` registers a URL for the server's

@@ -147,6 +147,20 @@ final class Json
         return self::value($json, $key) === null ? null : $decode(self::object($json, $key));
     }
 
+    /**
+     * A list of objects or `null`, each object read by its decoder.
+     *
+     * @template T
+     *
+     * @param \Closure(JsonObject): T $decode
+     *
+     * @return null|list<T>
+     */
+    public static function nullableObjects(#[\SensitiveParameter] JsonObject $json, string $key, \Closure $decode): ?array
+    {
+        return self::value($json, $key) === null ? null : \array_map($decode, self::objects($json, $key));
+    }
+
     /** @return list<JsonObject> */
     public static function objects(#[\SensitiveParameter] JsonObject $json, string $key): array
     {

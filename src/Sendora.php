@@ -16,6 +16,8 @@ use Sendora\Internal\Psr18Transport;
 use Sendora\Internal\SystemClock;
 use Sendora\Resources\Broadcasts;
 use Sendora\Resources\Email;
+use Sendora\Resources\Inbound;
+use Sendora\Resources\InboundDomains;
 use Sendora\Resources\Messages;
 use Sendora\Resources\Streams;
 use Sendora\Resources\Suppressions;
@@ -43,6 +45,12 @@ final class Sendora
 
     /** Sends mail: one message, or up to 100 in a batch. */
     public readonly Email $email;
+
+    /** Searches and reads received mail, and downloads its raw bytes and attachments. */
+    public readonly Inbound $inbound;
+
+    /** Claims, checks and removes the domains that the inbound streams receive on. */
+    public readonly InboundDomains $inboundDomains;
 
     /** Reads the message log: one message with its timeline, or a search. */
     public readonly Messages $messages;
@@ -136,6 +144,8 @@ final class Sendora
         $this->caller = $caller;
         $this->broadcasts = new Broadcasts($caller);
         $this->email = new Email($caller);
+        $this->inbound = new Inbound($caller);
+        $this->inboundDomains = new InboundDomains($caller);
         $this->messages = new Messages($caller);
         $this->server = new ThisServer($caller);
         $this->streams = new Streams($caller);
