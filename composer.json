@@ -1,0 +1,73 @@
+{
+    "name": "sendora/sendora-php",
+    "description": "The PHP client for Sendora's transactional email API.",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "email",
+        "transactional email",
+        "api",
+        "sendora"
+    ],
+    "homepage": "https://sendora.se/docs",
+    "support": {
+        "email": "support@sendora.se",
+        "issues": "https://github.com/sendora-se/sendora-php/issues",
+        "source": "https://github.com/sendora-se/sendora-php",
+        "docs": "https://sendora.se/docs"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "ext-dom": "*",
+        "ext-tokenizer": "*",
+        "ext-zlib": "*",
+        "ergebnis/composer-normalize": "^2.54",
+        "nyholm/psr7": "^1.8",
+        "php-cs-fixer/shim": "^3.95",
+        "phpstan/phpdoc-parser": "^2.3",
+        "phpstan/phpstan": "^2.3",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^11.5.50 || ^12.5.8 || ^13.4",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.1",
+        "psr/http-message": "^1.1 || ^2.0",
+        "psr/log": "^3.0",
+        "shipmonk/composer-dependency-analyser": "^1.8",
+        "symfony/http-client": "^7.4 || ^8.0",
+        "symfony/var-dumper": "^7.4 || ^8.0"
+    },
+    "conflict": {
+        "symfony/mailer": "<6.4"
+    },
+    "suggest": {
+        "psr/http-client-implementation": "To send through a PSR-18 HTTP client of your own, such as one with a proxy or a private CA",
+        "psr/log-implementation": "To log each retry through a PSR-3 logger",
+        "symfony/mailer": "To send Symfony's and Laravel's mail through Sendora's API with SendoraTransport"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sendora\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sendora\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "php-http/discovery": false
+        },
+        "platform": {
+            "php": "8.2.0"
+        },
+        "sort-packages": true
+    }
+}
