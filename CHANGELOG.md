@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0
+
+- `$sendora->streams`: `create()` adds a transactional, broadcast or
+  inbound stream, `list()` reads every stream of the server, and `get()`
+  one. `update()` renames a stream, or sets how long an inbound stream
+  keeps received content, and `null` puts that back to the default.
+  `archive()` stops a stream taking new messages.
+- `$sendora->broadcasts`: `send()` stores a broadcast of up to 50,000
+  messages under an idempotency key, each with its recipient's own
+  unsubscribe link. `list()` reads a page of the server's broadcasts,
+  `get()` one with its progress, and `cancel()` holds back the messages
+  not yet handed over.
+- `Stream`, `StreamList`, `StreamKind`, `AcceptedBroadcast`, `Broadcast`,
+  `BroadcastPage` and `BroadcastStatus` in `Sendora\Types`.
+
 ## 0.1.0
 
 - `Sendora`, the client for a server key. It reads the key from

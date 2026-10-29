@@ -14,8 +14,10 @@ use Sendora\Internal\CurlTransport;
 use Sendora\Internal\Options;
 use Sendora\Internal\Psr18Transport;
 use Sendora\Internal\SystemClock;
+use Sendora\Resources\Broadcasts;
 use Sendora\Resources\Email;
 use Sendora\Resources\Messages;
+use Sendora\Resources\Streams;
 
 /**
  * The client for a server key (`sk_…`): everything inside one server.
@@ -32,11 +34,17 @@ final class Sendora
 {
     private const KEY_VARIABLE = 'SENDORA_API_TOKEN';
 
+    /** Sends broadcasts on the server's broadcast streams, and follows and cancels them. */
+    public readonly Broadcasts $broadcasts;
+
     /** Sends mail: one message, or up to 100 in a batch. */
     public readonly Email $email;
 
     /** Reads the message log: one message with its timeline, or a search. */
     public readonly Messages $messages;
+
+    /** Adds, reads, renames and archives the server's streams. */
+    public readonly Streams $streams;
 
     private readonly Options $options;
 
@@ -110,7 +118,9 @@ final class Sendora
         $this->options = $options;
         $this->transport = $transport;
         $this->caller = $caller;
+        $this->broadcasts = new Broadcasts($caller);
         $this->email = new Email($caller);
         $this->messages = new Messages($caller);
+        $this->streams = new Streams($caller);
     }
 }
