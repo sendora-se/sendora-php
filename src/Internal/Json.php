@@ -133,6 +133,20 @@ final class Json
         return new JsonObject($value, self::where($json, $key));
     }
 
+    /**
+     * An object or `null`, the object read by its decoder.
+     *
+     * @template T
+     *
+     * @param \Closure(JsonObject): T $decode
+     *
+     * @return null|T
+     */
+    public static function nullableObject(#[\SensitiveParameter] JsonObject $json, string $key, \Closure $decode): mixed
+    {
+        return self::value($json, $key) === null ? null : $decode(self::object($json, $key));
+    }
+
     /** @return list<JsonObject> */
     public static function objects(#[\SensitiveParameter] JsonObject $json, string $key): array
     {

@@ -18,6 +18,9 @@ use Sendora\Resources\Broadcasts;
 use Sendora\Resources\Email;
 use Sendora\Resources\Messages;
 use Sendora\Resources\Streams;
+use Sendora\Resources\Suppressions;
+use Sendora\Resources\ThisServer;
+use Sendora\Resources\Tokens;
 
 /**
  * The client for a server key (`sk_…`): everything inside one server.
@@ -43,8 +46,17 @@ final class Sendora
     /** Reads the message log: one message with its timeline, or a search. */
     public readonly Messages $messages;
 
+    /** Reads the key's own server: its mode, its limits and the domains it may send from. */
+    public readonly ThisServer $server;
+
     /** Adds, reads, renames and archives the server's streams. */
     public readonly Streams $streams;
+
+    /** Reads each stream's suppression list, and lifts an entry from one. */
+    public readonly Suppressions $suppressions;
+
+    /** Creates, reads and revokes the server's keys. */
+    public readonly Tokens $tokens;
 
     private readonly Options $options;
 
@@ -121,6 +133,9 @@ final class Sendora
         $this->broadcasts = new Broadcasts($caller);
         $this->email = new Email($caller);
         $this->messages = new Messages($caller);
+        $this->server = new ThisServer($caller);
         $this->streams = new Streams($caller);
+        $this->suppressions = new Suppressions($caller);
+        $this->tokens = new Tokens($caller);
     }
 }

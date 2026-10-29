@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Sendora\Types;
+
+use Sendora\Internal\Json;
+use Sendora\Internal\JsonObject;
+use Sendora\Internal\KeepsJson;
+
+/** Every key of the server, revoked ones included. */
+final readonly class TokenList implements \JsonSerializable
+{
+    use KeepsJson;
+
+    /** @param list<Token> $tokens the keys, without their values */
+    public function __construct(
+        public array $tokens,
+        private ?JsonObject $json = null,
+    ) {}
+
+    /** @internal */
+    public static function fromWire(#[\SensitiveParameter] JsonObject $json): self
+    {
+        return new self(
+            tokens: \array_map(Token::fromWire(...), Json::objects($json, 'tokens')),
+            json: $json,
+        );
+    }
+}

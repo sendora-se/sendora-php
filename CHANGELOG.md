@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0
+
+- `$sendora->suppressions`: `list()` reads a page of a stream's
+  suppression list, and `listAll()` walks every page. `delete()` lifts a
+  hard bounce or an entry made by hand, so that the server may send to
+  the address again.
+- `$sendora->tokens`: `create()` makes another key of the server and
+  returns its value, shown this once. `list()` reads every key, `get()`
+  one, and `revoke()` stops a key working at once.
+- `$sendora->server`: `get()` reads the key's own server: its mode, its
+  limits with their use, its inbound cap and the domains it may send
+  from.
+- `Suppression`, `SuppressionPage`, `Token`, `CreatedToken`, `TokenList`,
+  `OwnServer`, `ServerLimit`, `InboundCap`, `SendableDomain`, `ServerMode`
+  and `LimitPeriod` in `Sendora\Types`. `var_dump()`, `print_r()` and
+  `json_encode()` of a `CreatedToken` leave out the key's value.
+
 ## 0.2.0
 
 - `$sendora->streams`: `create()` adds a transactional, broadcast or
