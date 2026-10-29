@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0
+
+- `$sendora->webhooks`: `create()` registers a URL for the server's
+  events and returns its signing secret, shown this once. `list()` reads
+  every webhook, `get()` one, and `delete()` removes one.
+  `deliveries()` reads a page of a webhook's deliveries,
+  `deliveriesAll()` walks every page, and `replay()` queues one again.
+  `createSecret()` adds a second signing secret, and `deleteSecret()`
+  removes one, so that a secret can be rolled without a gap.
+- `Webhook`, `CreatedWebhook`, `WebhookList`, `WebhookSecret`,
+  `CreatedWebhookSecret`, `Delivery`, `DeliveryPage`, `WebhookEventName`,
+  `InboundContent` and `DeliveryStatus` in `Sendora\Types`. `var_dump()`,
+  `print_r()` and `json_encode()` of a `CreatedWebhook` or a
+  `CreatedWebhookSecret` leave out the secret.
+
 ## 0.3.0
 
 - `$sendora->suppressions`: `list()` reads a page of a stream's

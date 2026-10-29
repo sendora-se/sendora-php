@@ -21,6 +21,7 @@ use Sendora\Resources\Streams;
 use Sendora\Resources\Suppressions;
 use Sendora\Resources\ThisServer;
 use Sendora\Resources\Tokens;
+use Sendora\Resources\Webhooks;
 
 /**
  * The client for a server key (`sk_…`): everything inside one server.
@@ -57,6 +58,9 @@ final class Sendora
 
     /** Creates, reads and revokes the server's keys. */
     public readonly Tokens $tokens;
+
+    /** Registers the server's webhooks, reads their deliveries and rolls their secrets. */
+    public readonly Webhooks $webhooks;
 
     private readonly Options $options;
 
@@ -137,5 +141,6 @@ final class Sendora
         $this->streams = new Streams($caller);
         $this->suppressions = new Suppressions($caller);
         $this->tokens = new Tokens($caller);
+        $this->webhooks = new Webhooks($caller);
     }
 }
