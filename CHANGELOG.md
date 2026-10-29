@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.0
+
+- `SendoraAccount`, the client for an account key. It reads the key
+  from `SENDORA_ACCOUNT_TOKEN` when not given, and takes the same
+  settings as `Sendora`.
+- `$account->servers`: `create()` makes a live or test server and
+  returns its first key, shown this once. `list()` reads every server,
+  `get()` one, `update()` renames one, and `delete()` removes one.
+- `$account->servers->tokens`: `create()`, `list()`, `get()` and
+  `revoke()` manage the keys of any of the account's servers.
+- `Keys::isTestKey()` tells a test server's key from a live one's.
+- `Server`, `CreatedServer` and `ServerList` in `Sendora\Types`.
+  `var_dump()`, `print_r()` and `json_encode()` of a `CreatedServer`
+  leave out its first key's value.
+
 ## 0.5.0
 
 - `$sendora->inbound`: `search()` reads a page of the mail that the
