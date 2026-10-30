@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0
+
+- `WebhookVerifier::verify()` checks a webhook delivery's signature and
+  returns its event. It throws `WebhookVerificationException` for a
+  missing, malformed or wrong signature, for one older or newer than the
+  tolerance, and for a signed body that is no event.
+- A class in `Sendora\Events` for each of the API's events, such as
+  `DeliveredEvent`, `BouncedEvent` and `InboundEvent`, each extending
+  `WebhookEvent`. An event that this release cannot read is an
+  `UnknownEvent`, which keeps its payload.
+
 ## 0.7.0
 
 - `$account->domains`: `create()` adds a sending domain with its own DKIM
