@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.0
+
+- `$account->domains`: `create()` adds a sending domain with its own DKIM
+  key and returns the two records to create. `verify()` looks them up
+  now, `list()` reads every domain, `get()` one, and `delete()` removes
+  one.
+- `$account->erasures`: `create()` asks Sendora to erase a person from
+  every server of the account, and `get()` reads the erasure back with
+  its outcome.
+- `SendingDomain`, `VerifiedDomain`, `DomainList`, `DomainCheck`,
+  `CnameRecord`, `Erasure` and `ErasureStatus` in `Sendora\Types`. The
+  SDK now makes every operation of the API.
+
 ## 0.6.0
 
 - `SendoraAccount`, the client for an account key. It reads the key

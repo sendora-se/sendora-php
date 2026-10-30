@@ -14,12 +14,15 @@ use Sendora\Internal\CurlTransport;
 use Sendora\Internal\Options;
 use Sendora\Internal\Psr18Transport;
 use Sendora\Internal\SystemClock;
+use Sendora\Resources\Domains;
+use Sendora\Resources\Erasures;
 use Sendora\Resources\Servers;
 
 /**
  * The client for an account key (`ak_…`): the account's servers and their
- * keys. An account key manages the account and never sends; a server key
- * on this client is refused with `wrong_token_kind`.
+ * keys, its sending domains and its erasures. An account key manages the
+ * account and never sends; a server key on this client is refused with
+ * `wrong_token_kind`.
  *
  * One client per process is the intended use. The client needs no closing.
  *
@@ -30,6 +33,12 @@ use Sendora\Resources\Servers;
 final class SendoraAccount
 {
     private const KEY_VARIABLE = 'SENDORA_ACCOUNT_TOKEN';
+
+    /** Adds, checks and removes the domains that the account sends from. */
+    public readonly Domains $domains;
+
+    /** Erases a person from every server of the account. */
+    public readonly Erasures $erasures;
 
     /** Creates, reads, renames and removes the account's servers, and manages each server's keys. */
     public readonly Servers $servers;
@@ -106,6 +115,8 @@ final class SendoraAccount
         $this->options = $options;
         $this->transport = $transport;
         $this->caller = $caller;
+        $this->domains = new Domains($caller);
+        $this->erasures = new Erasures($caller);
         $this->servers = new Servers($caller);
     }
 }
