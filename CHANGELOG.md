@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0
+
+- The README, which is the package's page on Packagist, is the whole
+  guide: every call, every error code and every event, with retries,
+  webhooks, the Symfony Mailer transport, testing and logging.
+- `skills/sendora/SKILL.md` is a short guide for coding agents, in the
+  agent skill format.
+
 ## 0.9.0
 
 - `Sendora\Mailer\SendoraTransport` sends Symfony's and Laravel's mail
