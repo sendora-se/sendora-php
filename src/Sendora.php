@@ -129,7 +129,7 @@ final class Sendora
     /**
      * Shows the address alone, never the key.
      *
-     * @return array<string, string>
+     * @return array{baseUrl: string}
      */
     public function __debugInfo(): array
     {

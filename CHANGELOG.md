@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.9.0
+
+- `Sendora\Mailer\SendoraTransport` sends Symfony's and Laravel's mail
+  through the API, on `symfony/mailer` 6.4 or newer. The envelope says
+  who gets each message, and the To, Cc and Bcc headers where each
+  recipient shows. Symfony's `TagHeader` and `MetadataHeader`, or
+  `X-Sendora-Tag` and `X-Sendora-Metadata-<key>`, give the tag and the
+  metadata. `X-Sendora-Stream` picks the stream, and
+  `X-Sendora-Idempotency-Key` the send's key. Reply-To, the thread's and
+  the unsubscribe headers and every other `X-` header pass on. The sent
+  message's id is Sendora's, and a failure is a `TransportException`
+  whose previous is the SDK's exception.
+- `Sendora\Mailer\SendoraTransportFactory` makes the transport from a
+  DSN such as `sendora+api://KEY@default?stream=<stream id>`.
+
 ## 0.8.0
 
 - `WebhookVerifier::verify()` checks a webhook delivery's signature and
