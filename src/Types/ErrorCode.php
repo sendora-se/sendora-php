@@ -19,7 +19,6 @@ enum ErrorCode: string
     case ReadOnlyConnection = 'read_only_connection';
     case TestServerOnly = 'test_server_only';
     case PaymentRequired = 'payment_required';
-    case UnpaidLimitReached = 'unpaid_limit_reached';
     case AccountPaused = 'account_paused';
     case AccountNotActive = 'account_not_active';
     case SpamComplaintLocked = 'spam_complaint_locked';

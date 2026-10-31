@@ -29,13 +29,10 @@ final readonly class RefusedBatchItem implements \JsonSerializable
      * @param list<string> $addresses on `test_address_on_live_server`, the simulator's addresses
      * @param null|string $scope on `rate_limited` and `monthly_cap_reached`, whose limit it is; `LimitScope` lists the values this release knows
      * @param null|int $limit on `rate_limited`, the messages allowed a minute
-     * @param null|int $retryAfter on `rate_limited`, the seconds to wait; on `unpaid_limit_reached`, the same while a charge under way makes room
+     * @param null|int $retryAfter on `rate_limited`, the seconds to wait
      * @param null|int $cap on `monthly_cap_reached`, the messages allowed a month
      * @param null|int $used on `monthly_cap_reached`, the messages sent this month
      * @param null|\DateTimeImmutable $resetsAt on `monthly_cap_reached`, when the month turns, in UTC
-     * @param null|int $unpaidOre on `unpaid_limit_reached`, what the account owes for emails before this one, in hundredths of a krona excluding VAT
-     * @param null|int $limitOre on `unpaid_limit_reached`, the most the account may owe for emails, in hundredths of a krona excluding VAT
-     * @param null|int $priceOre on `unpaid_limit_reached`, this message's price, in hundredths of a krona excluding VAT
      */
     public function __construct(
         public int $index,
@@ -54,9 +51,6 @@ final readonly class RefusedBatchItem implements \JsonSerializable
         public ?int $cap = null,
         public ?int $used = null,
         public ?\DateTimeImmutable $resetsAt = null,
-        public ?int $unpaidOre = null,
-        public ?int $limitOre = null,
-        public ?int $priceOre = null,
         private ?JsonObject $json = null,
     ) {}
 
@@ -78,9 +72,6 @@ final readonly class RefusedBatchItem implements \JsonSerializable
             cap: Json::optional($json, 'cap', Json::nullableInt(...)),
             used: Json::optional($json, 'used', Json::nullableInt(...)),
             resetsAt: Json::optional($json, 'resetsAt', Json::nullableTime(...)),
-            unpaidOre: Json::optional($json, 'unpaidOre', Json::nullableInt(...)),
-            limitOre: Json::optional($json, 'limitOre', Json::nullableInt(...)),
-            priceOre: Json::optional($json, 'priceOre', Json::nullableInt(...)),
             json: $json,
         );
     }

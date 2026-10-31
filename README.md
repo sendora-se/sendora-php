@@ -562,7 +562,6 @@ try {
 | `unauthorized`                    | 401    | The key is missing, malformed or revoked.                                                            |
 | `wrong_token_kind`                | 403    | A server key where an account key is needed, or the reverse; `message` names the kind.               |
 | `payment_required`                | 402    | The account's first payment has not arrived, or an unpaid charge has stopped live sending.           |
-| `unpaid_limit_reached`            | 402    | Would take the account's unpaid emails past its limit; `unpaidOre`, `limitOre`, `priceOre`.          |
 | `account_paused`                  | 403    | Sendora has paused the account.                                                                      |
 | `account_not_active`              | 403    | The account is not approved to send, or not active for an inbound stream.                            |
 | `spam_complaint_locked`           | 403    | Only support can lift a spam-complaint suppression.                                                  |
@@ -611,10 +610,9 @@ try {
 | `stale_signature`                 | none   | A webhook's signature is older than the tolerance.                                                   |
 
 `$error->isRetryable()` is true when waiting and calling again could
-succeed. On `unpaid_limit_reached` it is true only with a `retryAfter`,
-while a charge under way makes room. `ErrorCode` lists every code this
-release knows. A code newer than the release comes through as its
-string, its class chosen by the status.
+succeed. `ErrorCode` lists every code this release knows. A code newer
+than the release comes through as its string, its class chosen by the
+status.
 
 Neither the key nor a request's subject, text, HTML or attachments is
 ever part of an exception, its message or a dump of it. The recipient
@@ -641,9 +639,8 @@ errors are retried with jittered backoff, twice by default. That includes
 the plain-text 429 of the proxy in front of the API. A retry honours
 `retryAfter`, the seconds the API asks for, when it fits within five
 seconds of waiting in all. A longer `retryAfter` is thrown at once for
-you to schedule. `unpaid_limit_reached` asks for a minute while a charge
-makes room, so it is always thrown. No other failure is retried, so
-`monthly_cap_reached` is thrown at once, with `resetsAt`.
+you to schedule. No other failure is retried, so `monthly_cap_reached`
+is thrown at once, with `resetsAt`.
 
 A call that creates something is repeated only after a `rate_limited` or
 `sending_disabled` answer. It is never repeated after a lost connection
@@ -983,7 +980,7 @@ shapes in them.
 
 The package follows semantic versioning, and stays below 1.0.0 for now.
 Until then a minor version may break. `composer require` writes a
-constraint such as `^0.10`, which takes that minor's patches alone. From 1.0.0, a breaking change comes only in a major
+constraint such as `^0.11`, which takes that minor's patches alone. From 1.0.0, a breaking change comes only in a major
 version: a renamed or removed method, argument or property, or a changed
 error code. A minor adds methods, arguments, properties, codes or events,
 and a patch fixes a bug.

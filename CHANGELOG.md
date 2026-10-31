@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.0
+
+- `ErrorCode::UnpaidLimitReached` is removed, since the API no longer
+  returns `unpaid_limit_reached`. So are the properties `unpaidOre`,
+  `limitOre` and `priceOre` of `SendoraException` and
+  `RefusedBatchItem`. This breaks code that names any of them, so remove
+  each use. A 402 is now always `payment_required`, which has no
+  `retryAfter` and is never retried.
+
 ## 0.10.0
 
 - The README, which is the package's page on Packagist, is the whole

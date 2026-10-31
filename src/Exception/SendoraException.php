@@ -44,9 +44,6 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
      * @param null|int $cap the monthly cap, on `monthly_cap_reached`
      * @param null|int $used what was used of the cap, on `monthly_cap_reached`
      * @param null|\DateTimeImmutable $resetsAt when the month's count starts again, on `monthly_cap_reached`
-     * @param null|int $unpaidOre what the account owes for emails before this send, in hundredths of a krona excluding VAT, on `unpaid_limit_reached`
-     * @param null|int $limitOre the most the account may owe for emails, in hundredths of a krona excluding VAT, on `unpaid_limit_reached`
-     * @param null|int $priceOre this send's price, in hundredths of a krona excluding VAT, on `unpaid_limit_reached`
      * @param null|int $max how many keys, secrets or servers may exist, on `token_limit`, `secret_limit` and `server_limit`
      * @param list<ValidationIssue> $issues one entry per field, on `invalid_request`
      * @param list<SuppressedRecipient> $suppressed the recipients refused, on `recipient_suppressed`
@@ -69,9 +66,6 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
         public readonly ?int $cap = null,
         public readonly ?int $used = null,
         public readonly ?\DateTimeImmutable $resetsAt = null,
-        public readonly ?int $unpaidOre = null,
-        public readonly ?int $limitOre = null,
-        public readonly ?int $priceOre = null,
         public readonly ?int $max = null,
         public readonly array $issues = [],
         public readonly array $suppressed = [],
@@ -89,9 +83,8 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
 
     /**
      * Whether waiting and calling again could succeed: a rate limit, sending
-     * paused for everyone, a charge under way that makes room for unpaid
-     * emails, a lost connection, a timeout or a failure on the API's side.
-     * Never a refusal that the same request would meet again.
+     * paused for everyone, a lost connection, a timeout or a failure on the
+     * API's side. Never a refusal that the same request would meet again.
      */
     public function isRetryable(): bool
     {
@@ -106,9 +99,6 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
         ];
         if (\in_array($this->errorCode, $retried, true)) {
             return true;
-        }
-        if ($this->errorCode === ErrorCode::UnpaidLimitReached->value) {
-            return $this->retryAfter !== null;
         }
 
         return $this->status !== null && $this->status >= 500;
@@ -131,9 +121,6 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
             cap: $this->cap,
             used: $this->used,
             resetsAt: $this->resetsAt,
-            unpaidOre: $this->unpaidOre,
-            limitOre: $this->limitOre,
-            priceOre: $this->priceOre,
             max: $this->max,
             issues: $this->issues,
             suppressed: $this->suppressed,
