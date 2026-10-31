@@ -9,6 +9,10 @@ editor and PHPStan, and every answer is a readonly class.
 composer require sendora/sendora-php
 ```
 
+In a Laravel app, install `sendora/sendora-laravel` instead. It installs
+this package, sends Laravel's mail with `MAIL_MAILER=sendora`, and takes
+webhooks on a route of its own, with a Laravel event for each.
+
 Two kinds of key, two clients. `Sendora` takes a server key (`sk_…`) and
 does everything inside one server: sending, broadcasts, the log, received
 mail, streams, suppressions, tokens, webhooks and the server's own limits.
@@ -978,12 +982,11 @@ shapes in them.
 
 ## Versions
 
-The package follows semantic versioning, and stays below 1.0.0 for now.
-Until then a minor version may break. `composer require` writes a
-constraint such as `^0.11`, which takes that minor's patches alone. From 1.0.0, a breaking change comes only in a major
-version: a renamed or removed method, argument or property, or a changed
-error code. A minor adds methods, arguments, properties, codes or events,
-and a patch fixes a bug.
+The package follows semantic versioning. A breaking change comes only in
+a major version: a renamed or removed method, argument or property, or a
+changed error code. A minor adds methods, arguments, properties, codes or
+events, and a patch fixes a bug. `composer require` writes a constraint
+such as `^1.0`, which takes every later 1.x release.
 
 A release adds an argument only at the end of its method, so a call by
 position keeps working. An answer's constructor is outside the promise.

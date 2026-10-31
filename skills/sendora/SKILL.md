@@ -107,6 +107,10 @@ reference: every call, every error code and every event is in it.
   `MAILER_DSN=sendora+api://KEY@default`, once `SendoraTransportFactory`
   is registered as the README shows. Symfony's `TagHeader` and
   `MetadataHeader` become the tag and the metadata.
+- In a Laravel app, install `sendora/sendora-laravel`, which installs
+  this package. `MAIL_MAILER=sendora` sends Laravel's mail, the clients
+  come from the container, and the package's route checks each webhook
+  and fires a Laravel event. Its README has the settings.
 
 ## The shape of a call
 

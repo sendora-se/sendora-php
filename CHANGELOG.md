@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0
+
+- The first stable release. From 1.0.0 on, only a new major version
+  breaks code written for the one before it: a renamed or removed
+  method, argument or property, or a changed error code. A minor adds
+  methods, arguments, properties, codes or events, and a patch fixes a
+  bug. No call changes from 0.11.0.
+- The README and the skill send a Laravel app to
+  `sendora/sendora-laravel`.
+
 ## 0.11.0
 
 - `ErrorCode::UnpaidLimitReached` is removed, since the API no longer
