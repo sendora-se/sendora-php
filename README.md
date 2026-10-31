@@ -879,9 +879,10 @@ repeats a call after a retryable answer, such as a `503`, so pass
 
 Code that takes a resource, such as `Email`, rather than the client can
 take a double of it. Each resource class can be doubled with PHPUnit's
-`createMock()` or with Mockery. An answer's constructor is outside the
-semver promise, since a new property adds a parameter. So build an answer
-with named arguments, as below, and expect an upgrade to ask for more.
+`createMock()` or with Mockery. An answer's or a webhook event's
+constructor is outside the semver promise, since a new property adds a
+parameter. So build either with named arguments, as below, and expect an
+upgrade to ask for more.
 
 ```php
 use PHPUnit\Framework\TestCase;
@@ -989,7 +990,8 @@ events, and a patch fixes a bug. `composer require` writes a constraint
 such as `^1.0`, which takes every later 1.x release.
 
 A release adds an argument only at the end of its method, so a call by
-position keeps working. An answer's constructor is outside the promise.
+position keeps working. An answer's or a webhook event's constructor is
+outside the promise.
 `CHANGELOG.md` lists what each release changed.
 
 ## Docs

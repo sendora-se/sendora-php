@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+- The README says that a webhook event's constructor is outside the
+  semver promise, as an answer's is, since a new property adds a
+  parameter. No call changes.
+
 ## 1.0.0
 
 - The first stable release. From 1.0.0 on, only a new major version
