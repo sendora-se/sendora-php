@@ -16,7 +16,7 @@ final readonly class ServerLimit implements \JsonSerializable
 
     /**
      * @param string $scope whose limit it is: the account's, the server's own, or the test cap that the account's test servers share. `LimitScope` lists the values this release knows, so a `match` over it needs a `default` arm
-     * @param string $period what it counts over: the UTC minute or the calendar month in UTC. `LimitPeriod` lists the values this release knows, so a `match` over it needs a `default` arm
+     * @param string $period what it counts over: the UTC minute, or the month, which runs from the day and time of the first payment for a paying account's live server and is otherwise the calendar month in UTC. `LimitPeriod` lists the values this release knows, so a `match` over it needs a `default` arm
      * @param int $limit the emails allowed in the period, one per recipient
      * @param int $used the emails that the period has taken so far
      * @param \DateTimeImmutable $resetsAt when the period ends and the count starts again, in UTC

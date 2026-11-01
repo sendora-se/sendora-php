@@ -14,7 +14,7 @@ final readonly class InboundCap implements \JsonSerializable
     use KeepsJson;
 
     /**
-     * @param int $limit the emails the account may receive in the calendar month in UTC, over every inbound stream. It is the account's monthly cap on sending until an administrator moves it in the dashboard
+     * @param int $limit the emails the account may receive in its month, over every inbound stream. A paying account's month runs from the day and time of its first payment, and any other account's is the calendar month in UTC. It is the account's monthly cap on sending until an administrator moves it in the dashboard
      * @param int $used the emails received this month so far, one per recipient
      * @param \DateTimeImmutable $resetsAt when the month ends and the count starts again, in UTC
      */

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+- The docblocks of `LimitPeriod`, `ServerLimit`, `InboundCap` and
+  `RefusedBatchItem` say what an account's month is. An account that pays
+  by card counts a month from the day and time of its first payment, and
+  any other account the calendar month in UTC. No call changes.
+
 ## 1.0.1
 
 - The README says that a webhook event's constructor is outside the

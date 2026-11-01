@@ -32,7 +32,7 @@ final readonly class RefusedBatchItem implements \JsonSerializable
      * @param null|int $retryAfter on `rate_limited`, the seconds to wait
      * @param null|int $cap on `monthly_cap_reached`, the messages allowed a month
      * @param null|int $used on `monthly_cap_reached`, the messages sent this month
-     * @param null|\DateTimeImmutable $resetsAt on `monthly_cap_reached`, when the month turns, in UTC
+     * @param null|\DateTimeImmutable $resetsAt on `monthly_cap_reached`, when the month ends and the count starts again, in UTC
      */
     public function __construct(
         public int $index,
