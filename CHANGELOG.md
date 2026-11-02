@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+- The README says what `payment_required` means in each of its four cases:
+  the first payment has not arrived, an invoice is unpaid, payment is
+  paused, or the subscription has ended. No call changes.
+
 ## 1.0.2
 
 - The docblocks of `LimitPeriod`, `ServerLimit`, `InboundCap` and

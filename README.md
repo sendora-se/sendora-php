@@ -559,59 +559,59 @@ try {
 }
 ```
 
-| Code                              | Status | Meaning                                                                                              |
-| --------------------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
-| `invalid_request`                 | 400    | A field is wrong; `issues` says which.                                                               |
-| `idempotency_key_required`        | 400    | A batch was sent without a key, which the SDK always sends.                                          |
-| `unauthorized`                    | 401    | The key is missing, malformed or revoked.                                                            |
-| `wrong_token_kind`                | 403    | A server key where an account key is needed, or the reverse; `message` names the kind.               |
-| `payment_required`                | 402    | The account's first payment has not arrived, or an unpaid charge has stopped live sending.           |
-| `account_paused`                  | 403    | Sendora has paused the account.                                                                      |
-| `account_not_active`              | 403    | The account is not approved to send, or not active for an inbound stream.                            |
-| `spam_complaint_locked`           | 403    | Only support can lift a spam-complaint suppression.                                                  |
-| `unsubscribe_locked`              | 403    | Only support can lift a recipient's own unsubscribe.                                                 |
-| `not_found`                       | 404    | No such id on this server, or no such suppressed address.                                            |
-| `domain_exists`                   | 409    | The account already has the domain; `existingId` names it.                                           |
-| `domain_reserved`                 | 400    | The name is Sendora's own; no account can receive on it.                                             |
-| `inbound_domain_exists`           | 409    | The stream already has a domain (`existingId` names it), or another account holds the name verified. |
-| `webhook_exists`                  | 409    | The server already has a webhook for that URL; `existingId` names it.                                |
-| `stream_exists`                   | 409    | The server already has a stream with that name; `existingId` names it.                               |
-| `inbound_stream_exists`           | 409    | The server already has a live inbound stream; `existingId` names it.                                 |
-| `default_stream`                  | 409    | The default stream cannot be archived.                                                               |
-| `last_token`                      | 409    | The only live key cannot be revoked.                                                                 |
-| `last_secret`                     | 409    | The only live secret of a webhook cannot be deleted.                                                 |
-| `secret_limit`                    | 409    | The webhook already holds two live secrets; `max` says how many.                                     |
-| `token_limit`                     | 409    | The server or the account already holds two live keys; `max` says how many.                          |
-| `server_exists`                   | 409    | The account already has a server with that name.                                                     |
-| `server_limit`                    | 409    | The account has as many servers as it may; `max` says how many.                                      |
-| `server_reserved`                 | 409    | The server sends Sendora's own sign-in mail and cannot be renamed or removed.                        |
-| `server_in_flight`                | 409    | Messages of the server are still being delivered; delete it later.                                   |
-| `request_too_large`               | 413    | The body exceeds 10 MB, or 64 MB for a broadcast.                                                    |
-| `from_domain_not_verified`        | 422    | The From domain is not a verified sending domain.                                                    |
-| `stream_not_found`                | 422    | `streamId` names no stream of this server.                                                           |
-| `stream_archived`                 | 422    | The stream is archived and takes no new messages.                                                    |
-| `stream_paused`                   | 422    | Sendora paused the stream after complaints; support resumes it.                                      |
-| `stream_not_sendable`             | 422    | An inbound stream receives mail; it takes no messages and has no list.                               |
-| `stream_not_broadcast`            | 422    | A broadcast goes on a broadcast stream; this one is transactional.                                   |
-| `substitution_missing`            | 422    | The content names a `{{ key }}` a message does not give; `index` and `keys` say which.               |
-| `broadcast_not_open`              | 409    | The broadcast is completed or cancelled; nothing is left to cancel.                                  |
-| `unsubscribe_placeholder_missing` | 422    | A broadcast message lacks `{{ unsubscribe_url }}` in a part.                                         |
-| `list_unsubscribe_reserved`       | 422    | Sendora writes List-Unsubscribe on broadcast streams; leave it out.                                  |
-| `recipient_suppressed`            | 422    | Recipients on the suppression list; `suppressed` lists them.                                         |
-| `test_address_on_live_server`     | 422    | Addresses at simulator.sendora.se are for test servers; `addresses` lists them.                      |
-| `stream_kind_not_allowed`         | 422    | A test server has no inbound stream; receive on a live server.                                       |
-| `mode_immutable`                  | 400    | A server's mode is fixed at creation; create a new server for the other mode.                        |
-| `idempotency_key_mismatch`        | 422    | The key was used before with a different body.                                                       |
-| `content_expired`                 | 410    | The received message's content window has passed; the message itself stays.                          |
-| `content_unreadable`              | 409    | The received message's stored content cannot be opened; Sendora has been told.                       |
-| `rate_limited`                    | 429    | Per-minute limit; `retryAfter`, `scope`, `limit`. From the API's proxy, too many requests at once.   |
-| `monthly_cap_reached`             | 429    | The monthly cap is used up; `scope`, `cap`, `used`, `resetsAt`.                                      |
-| `sending_disabled`                | 503    | Sending is paused for everyone; `retryAfter`.                                                        |
-| `connection_failed`               | none   | The request did not reach the API, or its answer was lost; `getMessage()` says why.                  |
-| `timeout`                         | none   | An attempt took longer than `timeout`.                                                               |
-| `unexpected_response`             | any    | An answer without a JSON error body, such as from a proxy.                                           |
-| `invalid_signature`               | none   | A webhook's signature is missing, malformed or wrong.                                                |
-| `stale_signature`                 | none   | A webhook's signature is older than the tolerance.                                                   |
+| Code                              | Status | Meaning                                                                                                    |
+| --------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
+| `invalid_request`                 | 400    | A field is wrong; `issues` says which.                                                                     |
+| `idempotency_key_required`        | 400    | A batch was sent without a key, which the SDK always sends.                                                |
+| `unauthorized`                    | 401    | The key is missing, malformed or revoked.                                                                  |
+| `wrong_token_kind`                | 403    | A server key where an account key is needed, or the reverse; `message` names the kind.                     |
+| `payment_required`                | 402    | The first payment has not arrived, an invoice is unpaid, payment is paused, or the subscription has ended. |
+| `account_paused`                  | 403    | Sendora has paused the account.                                                                            |
+| `account_not_active`              | 403    | The account is not approved to send, or not active for an inbound stream.                                  |
+| `spam_complaint_locked`           | 403    | Only support can lift a spam-complaint suppression.                                                        |
+| `unsubscribe_locked`              | 403    | Only support can lift a recipient's own unsubscribe.                                                       |
+| `not_found`                       | 404    | No such id on this server, or no such suppressed address.                                                  |
+| `domain_exists`                   | 409    | The account already has the domain; `existingId` names it.                                                 |
+| `domain_reserved`                 | 400    | The name is Sendora's own; no account can receive on it.                                                   |
+| `inbound_domain_exists`           | 409    | The stream already has a domain (`existingId` names it), or another account holds the name verified.       |
+| `webhook_exists`                  | 409    | The server already has a webhook for that URL; `existingId` names it.                                      |
+| `stream_exists`                   | 409    | The server already has a stream with that name; `existingId` names it.                                     |
+| `inbound_stream_exists`           | 409    | The server already has a live inbound stream; `existingId` names it.                                       |
+| `default_stream`                  | 409    | The default stream cannot be archived.                                                                     |
+| `last_token`                      | 409    | The only live key cannot be revoked.                                                                       |
+| `last_secret`                     | 409    | The only live secret of a webhook cannot be deleted.                                                       |
+| `secret_limit`                    | 409    | The webhook already holds two live secrets; `max` says how many.                                           |
+| `token_limit`                     | 409    | The server or the account already holds two live keys; `max` says how many.                                |
+| `server_exists`                   | 409    | The account already has a server with that name.                                                           |
+| `server_limit`                    | 409    | The account has as many servers as it may; `max` says how many.                                            |
+| `server_reserved`                 | 409    | The server sends Sendora's own sign-in mail and cannot be renamed or removed.                              |
+| `server_in_flight`                | 409    | Messages of the server are still being delivered; delete it later.                                         |
+| `request_too_large`               | 413    | The body exceeds 10 MB, or 64 MB for a broadcast.                                                          |
+| `from_domain_not_verified`        | 422    | The From domain is not a verified sending domain.                                                          |
+| `stream_not_found`                | 422    | `streamId` names no stream of this server.                                                                 |
+| `stream_archived`                 | 422    | The stream is archived and takes no new messages.                                                          |
+| `stream_paused`                   | 422    | Sendora paused the stream after complaints; support resumes it.                                            |
+| `stream_not_sendable`             | 422    | An inbound stream receives mail; it takes no messages and has no list.                                     |
+| `stream_not_broadcast`            | 422    | A broadcast goes on a broadcast stream; this one is transactional.                                         |
+| `substitution_missing`            | 422    | The content names a `{{ key }}` a message does not give; `index` and `keys` say which.                     |
+| `broadcast_not_open`              | 409    | The broadcast is completed or cancelled; nothing is left to cancel.                                        |
+| `unsubscribe_placeholder_missing` | 422    | A broadcast message lacks `{{ unsubscribe_url }}` in a part.                                               |
+| `list_unsubscribe_reserved`       | 422    | Sendora writes List-Unsubscribe on broadcast streams; leave it out.                                        |
+| `recipient_suppressed`            | 422    | Recipients on the suppression list; `suppressed` lists them.                                               |
+| `test_address_on_live_server`     | 422    | Addresses at simulator.sendora.se are for test servers; `addresses` lists them.                            |
+| `stream_kind_not_allowed`         | 422    | A test server has no inbound stream; receive on a live server.                                             |
+| `mode_immutable`                  | 400    | A server's mode is fixed at creation; create a new server for the other mode.                              |
+| `idempotency_key_mismatch`        | 422    | The key was used before with a different body.                                                             |
+| `content_expired`                 | 410    | The received message's content window has passed; the message itself stays.                                |
+| `content_unreadable`              | 409    | The received message's stored content cannot be opened; Sendora has been told.                             |
+| `rate_limited`                    | 429    | Per-minute limit; `retryAfter`, `scope`, `limit`. From the API's proxy, too many requests at once.         |
+| `monthly_cap_reached`             | 429    | The monthly cap is used up; `scope`, `cap`, `used`, `resetsAt`.                                            |
+| `sending_disabled`                | 503    | Sending is paused for everyone; `retryAfter`.                                                              |
+| `connection_failed`               | none   | The request did not reach the API, or its answer was lost; `getMessage()` says why.                        |
+| `timeout`                         | none   | An attempt took longer than `timeout`.                                                                     |
+| `unexpected_response`             | any    | An answer without a JSON error body, such as from a proxy.                                                 |
+| `invalid_signature`               | none   | A webhook's signature is missing, malformed or wrong.                                                      |
+| `stale_signature`                 | none   | A webhook's signature is older than the tolerance.                                                         |
 
 `$error->isRetryable()` is true when waiting and calling again could
 succeed. `ErrorCode` lists every code this release knows. A code newer
