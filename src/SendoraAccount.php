@@ -17,6 +17,7 @@ use Sendora\Internal\SystemClock;
 use Sendora\Resources\Domains;
 use Sendora\Resources\Erasures;
 use Sendora\Resources\Servers;
+use Sendora\Resources\TrackingDomains;
 
 /**
  * The client for an account key (`ak_…`): the account's servers and their
@@ -36,6 +37,9 @@ final class SendoraAccount
 
     /** Adds, checks and removes the domains that the account sends from. */
     public readonly Domains $domains;
+
+    /** Adds, checks and removes the hosts that tracked links use. */
+    public readonly TrackingDomains $trackingDomains;
 
     /** Erases a person from every server of the account. */
     public readonly Erasures $erasures;
@@ -116,6 +120,7 @@ final class SendoraAccount
         $this->transport = $transport;
         $this->caller = $caller;
         $this->domains = new Domains($caller);
+        $this->trackingDomains = new TrackingDomains($caller);
         $this->erasures = new Erasures($caller);
         $this->servers = new Servers($caller);
     }

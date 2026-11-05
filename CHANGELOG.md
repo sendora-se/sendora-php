@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+- `SendoraAccount::$trackingDomains` adds, lists, reads, checks and removes
+  tracking domains, with the types `TrackingDomain` and `TrackingDomainList`
+  and five new error codes.
+
 ## 1.0.3
 
 - The README says what `payment_required` means in each of its four cases:

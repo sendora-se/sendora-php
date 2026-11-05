@@ -35,6 +35,7 @@ final class ErrorReader
         'stream_exists' => 'streamId',
         'inbound_stream_exists' => 'streamId',
         'inbound_domain_exists' => 'inboundDomainId',
+        'tracking_domain_exists' => 'trackingDomainId',
     ];
 
     /** The largest whole number JavaScript, which writes the API's JSON, sends exactly. */

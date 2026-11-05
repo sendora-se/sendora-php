@@ -17,7 +17,7 @@ Two kinds of key, two clients. `Sendora` takes a server key (`sk_…`) and
 does everything inside one server: sending, broadcasts, the log, received
 mail, streams, suppressions, tokens, webhooks and the server's own limits.
 `SendoraAccount` takes an account key (`ak_…`) and manages the account:
-its servers, their keys and its sending domains. Both keys are secrets:
+its servers, their keys, its sending and tracking domains. Both keys are secrets:
 keep them on the server and never ship them to a browser.
 
 ```php
@@ -482,6 +482,25 @@ echo $domain->returnPath->type, ' ', $domain->returnPath->host, ' ', $domain->re
 echo $domain->dkim->type, ' ', $domain->dkim->host, ' ', $domain->dkim->value, "\n";
 ```
 
+A tracking domain is the host that tracked links and the open pixel use: a
+subdomain of a verified sending domain, with one CNAME record to add. CAA
+records above it must let Let's Encrypt issue its certificate. Tracking is
+not open to accounts yet, so a host carries no mail until it is. A host
+whose records are not right within 7 days goes.
+
+| Call                                                   | Answers                                                                 |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `$account->trackingDomains->create(host:)`             | `TrackingDomain` with `cname` to add                                    |
+| `$account->trackingDomains->list()`                    | `TrackingDomainList` with `trackingDomains`                             |
+| `$account->trackingDomains->get($trackingDomainId)`    | One tracking domain with what the last check found                      |
+| `$account->trackingDomains->verify($trackingDomainId)` | The tracking domain as it stands: `state`, `cname->check`, `caa->check` |
+| `$account->trackingDomains->delete($trackingDomainId)` | Nothing; new mail stops using it at once                                |
+
+```php
+$tracking = $account->trackingDomains->create(host: 'links.example.se');
+echo $tracking->cname->type, ' ', $tracking->cname->host, ' ', $tracking->cname->value, "\n";
+```
+
 An erasure removes one person's data from every server of the account,
 as a request under the right to erasure asks. The content of every
 message to or from the address, sent and received, is deleted, and the
@@ -573,6 +592,11 @@ try {
 | `not_found`                       | 404    | No such id on this server, or no such suppressed address.                                                  |
 | `domain_exists`                   | 409    | The account already has the domain; `existingId` names it.                                                 |
 | `domain_reserved`                 | 400    | The name is Sendora's own; no account can receive on it.                                                   |
+| `tracking_domain_exists`          | 409    | The account already has the host, or one on that sending domain; `existingId` names it.                    |
+| `tracking_domain_limit`           | 409    | The account has as many tracking domains as it may.                                                        |
+| `tracking_host_is_sending_domain` | 422    | The host is a sending domain itself; choose a subdomain.                                                   |
+| `tracking_host_not_verified`      | 422    | The host is not under a verified sending domain of the account.                                            |
+| `tracking_host_taken`             | 409    | Another account holds the host.                                                                            |
 | `inbound_domain_exists`           | 409    | The stream already has a domain (`existingId` names it), or another account holds the name verified.       |
 | `webhook_exists`                  | 409    | The server already has a webhook for that URL; `existingId` names it.                                      |
 | `stream_exists`                   | 409    | The server already has a stream with that name; `existingId` names it.                                     |
@@ -652,7 +676,7 @@ or a server error, so nothing is created twice. These calls are
 `streams->create()`, `tokens->create()`, `webhooks->create()`,
 `webhooks->createSecret()`, `webhooks->replay()`,
 `inboundDomains->create()`, `servers->create()`,
-`servers->tokens->create()` and `domains->create()`.
+`servers->tokens->create()`, `domains->create()` and `trackingDomains->create()`.
 
 `timeout` is in seconds, 30 by default, and bounds a whole attempt,
 connecting included. `maxRetries: 0` turns retries off. `withOptions()`

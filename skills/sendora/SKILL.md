@@ -16,8 +16,8 @@ reference: every call, every error code and every event is in it.
   `new Sendora()`: `email`, `broadcasts`, `messages`, `inbound`,
   `inboundDomains`, `server`, `streams`, `suppressions`, `tokens` and
   `webhooks`, everything inside one server. An account key (`ak_…`)
-  drives `new SendoraAccount()`: `servers`, `servers->tokens`, `domains`
-  and `erasures`, and it never sends. A key of the wrong kind throws
+  drives `new SendoraAccount()`: `servers`, `servers->tokens`, `domains`,
+  `trackingDomains` and `erasures`, and it never sends. A key of the wrong kind throws
   `wrong_token_kind`.
 - Every key is a secret. Leave `token` out and the clients read
   `SENDORA_API_TOKEN` and `SENDORA_ACCOUNT_TOKEN` from `$_SERVER`,
