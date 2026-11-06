@@ -10,7 +10,7 @@ use Sendora\Internal\KeepsJson;
 use Sendora\Internal\Values;
 
 /** A broadcast and how far it has come. */
-final readonly class Broadcast implements \JsonSerializable
+readonly class Broadcast implements \JsonSerializable
 {
     use KeepsJson;
 

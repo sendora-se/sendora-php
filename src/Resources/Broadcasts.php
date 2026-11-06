@@ -15,6 +15,7 @@ use Sendora\Internal\Idempotency;
 use Sendora\Internal\Wire;
 use Sendora\Types\AcceptedBroadcast;
 use Sendora\Types\Broadcast;
+use Sendora\Types\BroadcastDetail;
 use Sendora\Types\BroadcastPage;
 
 /**
@@ -161,6 +162,8 @@ class Broadcasts
      * echo $broadcast->released, ' of ', $broadcast->total, "\n";
      * ```
      *
+     * @return BroadcastDetail the broadcast, with what tracking recorded of it
+     *
      * @throws NotFoundException no broadcast of this server has the id
      * @throws SendoraException the call failed
      * @throws InvalidArgumentException the id is empty, `.` or `..`; nothing was sent
@@ -169,7 +172,7 @@ class Broadcasts
     {
         return $this->caller->json(
             new Call('GET', Wire::path('/v1/broadcasts/{}', $broadcastId), idempotent: true),
-            Broadcast::fromWire(...),
+            BroadcastDetail::fromWire(...),
         );
     }
 

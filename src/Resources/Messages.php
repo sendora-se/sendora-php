@@ -30,7 +30,7 @@ class Messages
 
     /**
      * One message as the log holds it, with its timeline: its recipients
-     * and where each stands, its attachments described, and every event,
+     * and where each stands, its attachments described, and the events,
      * oldest first. Its bodies are never returned.
      *
      * ```php

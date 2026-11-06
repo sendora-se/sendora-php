@@ -11,7 +11,8 @@ use Sendora\Internal\Values;
 
 /**
  * A message with its attachments described and its timeline: what
- * `Message` has, and two lists more. Its bodies are never returned.
+ * `Message` has, what tracking says of it and two lists more. Its bodies
+ * are never returned.
  */
 final readonly class MessageDetail implements \JsonSerializable
 {
@@ -29,8 +30,9 @@ final readonly class MessageDetail implements \JsonSerializable
      * @param \DateTimeImmutable $submittedAt when it was accepted, in UTC
      * @param bool $test whether it went through a test server, its events simulated
      * @param list<MessageRecipient> $recipients each recipient, and where its delivery stands
+     * @param MessageTracking $tracking whether opens and clicks are recorded now, and why tracking may have stayed out
      * @param list<MessageAttachment> $attachments each attachment, described
-     * @param list<MessageEvent> $events every event, oldest first
+     * @param list<MessageEvent> $events the events, oldest first; opens and clicks are capped, while each recipient's `opens` and `clicks` count them all
      */
     public function __construct(
         public string $messageId,
@@ -45,6 +47,7 @@ final readonly class MessageDetail implements \JsonSerializable
         public \DateTimeImmutable $submittedAt,
         public bool $test,
         public array $recipients,
+        public MessageTracking $tracking,
         public array $attachments,
         public array $events,
         private ?JsonObject $json = null,
@@ -65,6 +68,7 @@ final readonly class MessageDetail implements \JsonSerializable
             submittedAt: Json::time($json, 'submittedAt'),
             test: Json::bool($json, 'test'),
             recipients: \array_map(MessageRecipient::fromWire(...), Json::objects($json, 'recipients')),
+            tracking: MessageTracking::fromWire(Json::object($json, 'tracking')),
             attachments: \array_map(MessageAttachment::fromWire(...), Json::objects($json, 'attachments')),
             events: \array_map(MessageEvent::fromWire(...), Json::objects($json, 'events')),
             json: $json,

@@ -116,16 +116,16 @@ foreach ($batch->results as $result) {
 
 ## Messages
 
-| Call                                                              | Returns                                                                                    |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `$sendora->messages->get($messageId)`                             | `MessageDetail`: the message with its recipients, its attachments described and its events |
-| `$sendora->messages->search(...$filters)`                         | `MessagePage` with `messages` and `next`, newest first                                     |
-| `$sendora->messages->searchAll(...$filters)`                      | Every match, page by page, as a generator                                                  |
-| `$sendora->inbound->get($inboundMessageId)`                       | A received message: envelope, parties, headers, text, HTML, attachments described          |
-| `$sendora->inbound->search(...$filters)`                          | `InboundPage` of received mail, newest first                                               |
-| `$sendora->inbound->searchAll(...$filters)`                       | Every received match, page by page, as a generator                                         |
-| `$sendora->inbound->raw($inboundMessageId)`                       | The raw message's bytes as a string, `message/rfc822`                                      |
-| `$sendora->inbound->attachment($inboundMessageId, $attachmentId)` | An attachment's bytes as a string                                                          |
+| Call                                                              | Returns                                                                                                |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `$sendora->messages->get($messageId)`                             | `MessageDetail`: the message with its recipients, `tracking`, its attachments described and its events |
+| `$sendora->messages->search(...$filters)`                         | `MessagePage` with `messages` and `next`, newest first                                                 |
+| `$sendora->messages->searchAll(...$filters)`                      | Every match, page by page, as a generator                                                              |
+| `$sendora->inbound->get($inboundMessageId)`                       | A received message: envelope, parties, headers, text, HTML, attachments described                      |
+| `$sendora->inbound->search(...$filters)`                          | `InboundPage` of received mail, newest first                                                           |
+| `$sendora->inbound->searchAll(...$filters)`                       | Every received match, page by page, as a generator                                                     |
+| `$sendora->inbound->raw($inboundMessageId)`                       | The raw message's bytes as a string, `message/rfc822`                                                  |
+| `$sendora->inbound->attachment($inboundMessageId, $attachmentId)` | An attachment's bytes as a string                                                                      |
 
 A stream can also receive on a domain of yours: every address on it,
 whatever the local part, lands on the stream. Claim it with the stream
@@ -149,6 +149,11 @@ or a list of them. `from` and `to` take a `DateTimeInterface` or RFC 3339
 text. `limit` is 1 to 100, 50 by default, and `after` is the previous
 page's `next`. Bodies are never returned, and the log keeps messages for
 13 months.
+
+Where mail is tracked, each `MessageRecipient` has `tracked`, `opens`,
+`clicks`, `firstOpenAt` and `firstHumanOpenAt`. `messages->get()` adds
+`tracking`, and its timeline holds `Open` and `Click` events with their
+labels. Tracking is not open to accounts yet.
 
 The filters of `inbound->search()` are `streamId`, and `from`, the
 sender's address. `recipient` is the address of yours that the mail went
@@ -218,12 +223,12 @@ A message's `substitutions`, up to 20 strings, replace `{{ key }}` in
 the subject, the text and the HTML, escaped in the HTML. A key that the
 content names and a message lacks throws `substitution_missing`.
 
-| Call                                         | Returns                                                                  |
-| -------------------------------------------- | ------------------------------------------------------------------------ |
-| `$sendora->broadcasts->send(...$broadcast)`  | `AcceptedBroadcast` with `broadcastId`, `total`, `suppressed` and `test` |
-| `$sendora->broadcasts->get($broadcastId)`    | `Broadcast` with `status`, `released` and `failed`                       |
-| `$sendora->broadcasts->list(limit:, after:)` | `BroadcastPage` with `broadcasts` and `next`, newest first               |
-| `$sendora->broadcasts->cancel($broadcastId)` | The cancelled broadcast; what had not left counts as failed              |
+| Call                                         | Returns                                                                                |
+| -------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `$sendora->broadcasts->send(...$broadcast)`  | `AcceptedBroadcast` with `broadcastId`, `total`, `suppressed` and `test`               |
+| `$sendora->broadcasts->get($broadcastId)`    | `BroadcastDetail` with `status`, `released`, `failed`, `opened`, `clicked` and `links` |
+| `$sendora->broadcasts->list(limit:, after:)` | `BroadcastPage` with `broadcasts` and `next`, newest first                             |
+| `$sendora->broadcasts->cancel($broadcastId)` | The cancelled broadcast; what had not left counts as failed                            |
 
 ```php
 $accepted = $sendora->broadcasts->send(

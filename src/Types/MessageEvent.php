@@ -21,6 +21,7 @@ final readonly class MessageEvent implements \JsonSerializable
      * @param null|int $code the SMTP status the receiver answered
      * @param null|string $details the receiver's response text
      * @param null|string $classification how a bounce was classified, such as `InvalidRecipient`
+     * @param null|MessageEventTracking $tracking what tracking knows of an `Open` or a `Click`; `null` on any other event
      */
     public function __construct(
         public ?string $recipient,
@@ -30,6 +31,7 @@ final readonly class MessageEvent implements \JsonSerializable
         public ?int $code,
         public ?string $details,
         public ?string $classification,
+        public ?MessageEventTracking $tracking,
         private ?JsonObject $json = null,
     ) {}
 
@@ -43,6 +45,7 @@ final readonly class MessageEvent implements \JsonSerializable
             code: Json::nullableInt($json, 'code'),
             details: Json::nullableString($json, 'details'),
             classification: Json::nullableString($json, 'classification'),
+            tracking: Json::nullableObject($json, 'tracking', MessageEventTracking::fromWire(...)),
             json: $json,
         );
     }

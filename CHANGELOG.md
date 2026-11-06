@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+- Each `MessageRecipient` has `tracked`, `opens`, `clicks`, `firstOpenAt` and
+  `firstHumanOpenAt`.
+- `messages->get()` returns `tracking`, a `MessageTracking` with
+  `recordingOpens`, `recordingClicks` and `skipped`. Its timeline holds `Open`
+  and `Click` events, each with its `tracking`.
+- `broadcasts->get()` returns `BroadcastDetail`, a `Broadcast` with `opened`,
+  `openedByPeople`, `clicked`, `clickedByPeople` and `links`.
+
 ## 1.1.0
 
 - `SendoraAccount::$trackingDomains` adds, lists, reads, checks and removes

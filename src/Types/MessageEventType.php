@@ -7,7 +7,8 @@ namespace Sendora\Types;
 /**
  * A step of a message's timeline: `Reception` when the mail server took
  * the message, `Delivery`, `TransientFailure`, `Bounce`, `OOB` for a
- * bounce report received by mail, and `Feedback` for a spam complaint.
+ * bounce report received by mail, `Feedback` for a spam complaint, and
+ * `Open` and `Click` for what tracking recorded.
  */
 enum MessageEventType: string
 {
@@ -23,4 +24,6 @@ enum MessageEventType: string
     case DeferredInjectionRebind = 'DeferredInjectionRebind';
     case Rejection = 'Rejection';
     case Delayed = 'Delayed';
+    case Open = 'Open';
+    case Click = 'Click';
 }
