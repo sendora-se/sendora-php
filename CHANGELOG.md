@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0
+
+- Two events, `OpenedEvent` and `ClickedEvent`, for `opened` and `clicked`:
+  a tracked copy's pixel loaded, or a tracked link was followed. A webhook
+  gets them only if it names them, so `webhooks->create()` without `events`
+  takes every other event.
+
 ## 1.2.0
 
 - Each `MessageRecipient` has `tracked`, `opens`, `clicks`, `firstOpenAt` and

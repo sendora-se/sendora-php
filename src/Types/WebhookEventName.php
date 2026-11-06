@@ -12,6 +12,8 @@ enum WebhookEventName: string
     case Deferred = 'deferred';
     case SpamComplaint = 'spam_complaint';
     case Unsubscribed = 'unsubscribed';
+    case Opened = 'opened';
+    case Clicked = 'clicked';
     case CapWarning = 'cap_warning';
     case CapReached = 'cap_reached';
     case Inbound = 'inbound';

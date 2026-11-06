@@ -339,6 +339,11 @@ Events about a message are `delivered`, `bounced`, `deferred`,
 or `one_click`). `cap_warning` and `cap_reached` are about usage, with
 `scope`, `cap`, `used` and the period.
 
+`opened` and `clicked` are about a tracked copy, and go only to a webhook
+that names them. They have the same fields as the events above. Their `details`
+say whether a machine did it, and for `clicked` give the `link`. Tracking is
+not open to accounts yet, so they are not sent until it is.
+
 `inbound` is about a message received on an inbound stream. It has
 `inboundMessageId`, `envelopeRecipient`, the sizes and the
 `authentication` verdicts. For a webhook with `inboundContent: 'full'`,
@@ -411,6 +416,8 @@ and `event`.
 | `deferred`            | `DeferredEvent`          |
 | `spam_complaint`      | `SpamComplaintEvent`     |
 | `unsubscribed`        | `UnsubscribedEvent`      |
+| `opened`              | `OpenedEvent`            |
+| `clicked`             | `ClickedEvent`           |
 | `cap_warning`         | `CapWarningEvent`        |
 | `cap_reached`         | `CapReachedEvent`        |
 | `inbound`             | `InboundEvent`           |

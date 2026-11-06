@@ -50,7 +50,7 @@ class Webhooks
      * ```
      *
      * @param string $url where the events are posted: https, without credentials or a fragment
-     * @param null|list<string> $events the events to deliver, as `WebhookEventName` lists them; every event when left out
+     * @param null|list<string> $events the events to deliver, as `WebhookEventName` lists them; every event except `opened` and `clicked` when left out
      * @param null|string $streamId the one stream whose message events it receives; every stream when left out. Events about usage arrive either way
      * @param null|string $inboundContent how the `inbound` event carries a received message, as `InboundContent` lists them; `full` when left out
      *

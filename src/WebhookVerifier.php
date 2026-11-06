@@ -7,11 +7,13 @@ namespace Sendora;
 use Sendora\Events\BouncedEvent;
 use Sendora\Events\CapReachedEvent;
 use Sendora\Events\CapWarningEvent;
+use Sendora\Events\ClickedEvent;
 use Sendora\Events\DeferredEvent;
 use Sendora\Events\DeliveredEvent;
 use Sendora\Events\InboundCapReachedEvent;
 use Sendora\Events\InboundCapWarningEvent;
 use Sendora\Events\InboundEvent;
+use Sendora\Events\OpenedEvent;
 use Sendora\Events\SpamComplaintEvent;
 use Sendora\Events\UnknownEvent;
 use Sendora\Events\UnsubscribedEvent;
@@ -155,6 +157,8 @@ final class WebhookVerifier
                 'deferred' => DeferredEvent::fromWire($json),
                 'spam_complaint' => SpamComplaintEvent::fromWire($json),
                 'unsubscribed' => UnsubscribedEvent::fromWire($json),
+                'opened' => OpenedEvent::fromWire($json),
+                'clicked' => ClickedEvent::fromWire($json),
                 'cap_warning' => CapWarningEvent::fromWire($json),
                 'cap_reached' => CapReachedEvent::fromWire($json),
                 'inbound' => InboundEvent::fromWire($json),
