@@ -21,6 +21,7 @@ use Sendora\Resources\InboundDomains;
 use Sendora\Resources\Messages;
 use Sendora\Resources\Streams;
 use Sendora\Resources\Suppressions;
+use Sendora\Resources\TrackingOptOuts;
 use Sendora\Resources\ThisServer;
 use Sendora\Resources\Tokens;
 use Sendora\Resources\Webhooks;
@@ -66,6 +67,9 @@ final class Sendora
 
     /** Creates, reads and revokes the server's keys. */
     public readonly Tokens $tokens;
+
+    /** Reads the server's not-tracked list, adds an address to it and removes one. */
+    public readonly TrackingOptOuts $trackingOptOuts;
 
     /** Registers the server's webhooks, reads their deliveries and rolls their secrets. */
     public readonly Webhooks $webhooks;
@@ -151,6 +155,7 @@ final class Sendora
         $this->streams = new Streams($caller);
         $this->suppressions = new Suppressions($caller);
         $this->tokens = new Tokens($caller);
+        $this->trackingOptOuts = new TrackingOptOuts($caller);
         $this->webhooks = new Webhooks($caller);
     }
 }

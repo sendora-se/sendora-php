@@ -14,7 +14,8 @@ reference: every call, every error code and every event is in it.
 
 - Two kinds of key, two clients. A server key (`sk_…`) drives
   `new Sendora()`: `email`, `broadcasts`, `messages`, `inbound`,
-  `inboundDomains`, `server`, `streams`, `suppressions`, `tokens` and
+  `inboundDomains`, `server`, `streams`, `suppressions`, `trackingOptOuts`,
+  `tokens` and
   `webhooks`, everything inside one server. An account key (`ak_…`)
   drives `new SendoraAccount()`: `servers`, `servers->tokens`, `domains`,
   `trackingDomains` and `erasures`, and it never sends. A key of the wrong kind throws
@@ -72,6 +73,9 @@ reference: every call, every error code and every event is in it.
   comparing `$event->event`, and handle `UnknownEvent`, an event newer
   than the release. Answer 2xx quickly and do the work afterwards.
   Deliveries arrive at least once, so key handling on `$event->id`.
+- `trackingOptOuts` is the server's list of addresses that are never
+  tracked. Remove an entry whose `source` is `recipient` only after new
+  consent. An erased entry has a `null` `address`, and only its address removes it.
 - Addresses on the suppression list are refused with
   `recipient_suppressed`. Lift a hard bounce with
   `suppressions->delete(address: ...)`. A spam complaint or an

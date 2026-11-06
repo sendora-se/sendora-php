@@ -15,7 +15,7 @@ webhooks on a route of its own, with a Laravel event for each.
 
 Two kinds of key, two clients. `Sendora` takes a server key (`sk_…`) and
 does everything inside one server: sending, broadcasts, the log, received
-mail, streams, suppressions, tokens, webhooks and the server's own limits.
+mail, streams, suppressions, the not-tracked list, tokens, webhooks and the server's own limits.
 `SendoraAccount` takes an account key (`ak_…`) and manages the account:
 its servers, their keys, its sending and tracking domains. Both keys are secrets:
 keep them on the server and never ship them to a browser.
@@ -264,6 +264,29 @@ request. A refused send carries `streamId` beside `suppressed`.
 
 ```php
 $sendora->suppressions->delete(address: 'anna@example.com');
+```
+
+## The not-tracked list
+
+Addresses the server never tracks, on any of its streams. Mail to one still
+goes out, untracked, and its opens and clicks of mail already sent are not
+recorded. Tracking is not open to accounts yet, so the list changes nothing
+until it is.
+
+| Call                                              | Returns                                                  |
+| ------------------------------------------------- | -------------------------------------------------------- |
+| `$sendora->trackingOptOuts->list(limit:, after:)` | `TrackingOptOutPage` with `trackingOptOuts` and `next`   |
+| `$sendora->trackingOptOuts->listAll()`            | Every entry, as a generator                              |
+| `$sendora->trackingOptOuts->add(address:)`        | `TrackingOptOut`, as it stands if the address was listed |
+| `$sendora->trackingOptOuts->delete(address:)`     | Nothing; `not_found` if the address is not listed        |
+
+An entry's `source` is `manual`, or `recipient` if the recipient asked for it.
+Remove a recipient's own entry only after new consent. An entry's `address` is
+`null` once an erasure has left only a keyed hash of it. `delete()` still finds
+that entry by its address, and nothing removes it without the address.
+
+```php
+$sendora->trackingOptOuts->add(address: 'anna@example.com');
 ```
 
 ## Tokens
@@ -601,7 +624,7 @@ try {
 | `account_not_active`              | 403    | The account is not approved to send, or not active for an inbound stream.                                  |
 | `spam_complaint_locked`           | 403    | Only support can lift a spam-complaint suppression.                                                        |
 | `unsubscribe_locked`              | 403    | Only support can lift a recipient's own unsubscribe.                                                       |
-| `not_found`                       | 404    | No such id on this server, or no such suppressed address.                                                  |
+| `not_found`                       | 404    | No such id on this server, or no such suppressed or not-tracked address.                                   |
 | `domain_exists`                   | 409    | The account already has the domain; `existingId` names it.                                                 |
 | `domain_reserved`                 | 400    | The name is Sendora's own; no account can receive on it.                                                   |
 | `tracking_domain_exists`          | 409    | The account already has the host, or one on that sending domain; `existingId` names it.                    |

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+- `$sendora->trackingOptOuts` manages a server's not-tracked list: `list()`,
+  `listAll()`, `add()` and `delete()`. A `TrackingOptOut` names its `address`,
+  which is `null` once an erasure has left only a keyed hash, and its `source`.
+
 ## 1.3.0
 
 - Two events, `OpenedEvent` and `ClickedEvent`, for `opened` and `clicked`:
