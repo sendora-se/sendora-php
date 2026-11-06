@@ -14,6 +14,7 @@ enum WebhookEventName: string
     case Unsubscribed = 'unsubscribed';
     case Opened = 'opened';
     case Clicked = 'clicked';
+    case TrackingOptedOut = 'tracking_opted_out';
     case CapWarning = 'cap_warning';
     case CapReached = 'cap_reached';
     case Inbound = 'inbound';

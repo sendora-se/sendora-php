@@ -282,8 +282,14 @@ until it is.
 
 An entry's `source` is `manual`, or `recipient` if the recipient asked for it.
 Remove a recipient's own entry only after new consent. An entry's `address` is
-`null` once an erasure has left only a keyed hash of it. `delete()` still finds
-that entry by its address, and nothing removes it without the address.
+`null` when only a keyed hash of it is left, after an erasure or when the
+recipient asked from mail that had left the log. `delete()` still finds that entry
+by its address, and nothing removes it without the address.
+
+To let a recipient ask, write `{{ tracking_opt_out_url }}` in the text or the
+HTML of a message on any stream. Each recipient then gets a copy with their own
+link to a page in Swedish and English. Its button lists the address with the
+`source` `recipient`, and sends the `tracking_opted_out` event.
 
 ```php
 $sendora->trackingOptOuts->add(address: 'anna@example.com');
@@ -367,6 +373,9 @@ that names them. They have the same fields as the events above. Their `details`
 say whether a machine did it, and for `clicked` give the `link`. Tracking is
 not open to accounts yet, so they are not sent until it is.
 
+`tracking_opted_out` says that a recipient asked not to be tracked. It has the
+same fields as the events above, and no `details`.
+
 `inbound` is about a message received on an inbound stream. It has
 `inboundMessageId`, `envelopeRecipient`, the sizes and the
 `authentication` verdicts. For a webhook with `inboundContent: 'full'`,
@@ -441,6 +450,7 @@ and `event`.
 | `unsubscribed`        | `UnsubscribedEvent`      |
 | `opened`              | `OpenedEvent`            |
 | `clicked`             | `ClickedEvent`           |
+| `tracking_opted_out`  | `TrackingOptedOutEvent`  |
 | `cap_warning`         | `CapWarningEvent`        |
 | `cap_reached`         | `CapReachedEvent`        |
 | `inbound`             | `InboundEvent`           |

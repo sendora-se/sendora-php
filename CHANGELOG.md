@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.0
+
+- A new event, `TrackingOptedOutEvent`, for `tracking_opted_out`: a recipient
+  asked not to be tracked, through the link that `{{ tracking_opt_out_url }}`
+  puts in your mail. `webhooks->create()` without `events` takes it.
+
 ## 1.4.0
 
 - `$sendora->trackingOptOuts` manages a server's not-tracked list: `list()`,

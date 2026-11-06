@@ -15,6 +15,7 @@ use Sendora\Events\InboundCapWarningEvent;
 use Sendora\Events\InboundEvent;
 use Sendora\Events\OpenedEvent;
 use Sendora\Events\SpamComplaintEvent;
+use Sendora\Events\TrackingOptedOutEvent;
 use Sendora\Events\UnknownEvent;
 use Sendora\Events\UnsubscribedEvent;
 use Sendora\Events\WebhookEvent;
@@ -159,6 +160,7 @@ final class WebhookVerifier
                 'unsubscribed' => UnsubscribedEvent::fromWire($json),
                 'opened' => OpenedEvent::fromWire($json),
                 'clicked' => ClickedEvent::fromWire($json),
+                'tracking_opted_out' => TrackingOptedOutEvent::fromWire($json),
                 'cap_warning' => CapWarningEvent::fromWire($json),
                 'cap_reached' => CapReachedEvent::fromWire($json),
                 'inbound' => InboundEvent::fromWire($json),
