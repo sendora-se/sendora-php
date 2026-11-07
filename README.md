@@ -153,7 +153,7 @@ page's `next`. Bodies are never returned, and the log keeps messages for
 Where mail is tracked, each `MessageRecipient` has `tracked`, `opens`,
 `clicks`, `firstOpenAt` and `firstHumanOpenAt`. `messages->get()` adds
 `tracking`, and its timeline holds `Open` and `Click` events with their
-labels. Tracking is not open to accounts yet.
+labels. An administrator switches tracking on for a stream in the dashboard.
 
 The filters of `inbound->search()` are `streamId`, and `from`, the
 sender's address. `recipient` is the address of yours that the mail went
@@ -270,8 +270,7 @@ $sendora->suppressions->delete(address: 'anna@example.com');
 
 Addresses the server never tracks, on any of its streams. Mail to one still
 goes out, untracked, and its opens and clicks of mail already sent are not
-recorded. Tracking is not open to accounts yet, so the list changes nothing
-until it is.
+recorded.
 
 | Call                                              | Returns                                                  |
 | ------------------------------------------------- | -------------------------------------------------------- |
@@ -370,8 +369,7 @@ or `one_click`). `cap_warning` and `cap_reached` are about usage, with
 
 `opened` and `clicked` are about a tracked copy, and go only to a webhook
 that names them. They have the same fields as the events above. Their `details`
-say whether a machine did it, and for `clicked` give the `link`. Tracking is
-not open to accounts yet, so they are not sent until it is.
+say whether a machine did it, and for `clicked` give the `link`.
 
 `tracking_opted_out` says that a recipient asked not to be tracked. It has the
 same fields as the events above, and no `details`.
@@ -529,9 +527,8 @@ echo $domain->dkim->type, ' ', $domain->dkim->host, ' ', $domain->dkim->value, "
 
 A tracking domain is the host that tracked links and the open pixel use: a
 subdomain of a verified sending domain, with one CNAME record to add. CAA
-records above it must let Let's Encrypt issue its certificate. Tracking is
-not open to accounts yet, so a host carries no mail until it is. A host
-whose records are not right within 7 days goes.
+records above it must let Let's Encrypt issue its certificate. A host whose
+records are not right within 7 days goes.
 
 | Call                                                   | Answers                                                                 |
 | ------------------------------------------------------ | ----------------------------------------------------------------------- |

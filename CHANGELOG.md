@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1
+
+- The README no longer says that tracking is not open to accounts. It says
+  that an administrator switches tracking on for a stream in the dashboard.
+  No call changes.
+
 ## 1.5.0
 
 - A new event, `TrackingOptedOutEvent`, for `tracking_opted_out`: a recipient
