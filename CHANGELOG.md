@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.0
+
+- The mailer driver reads `X-Sendora-Track-Opens` and `X-Sendora-Track-Links`
+  as the send's `trackOpens` and `trackLinks`, as SMTP submission does. Each
+  is `true` or `false`, in any case. Another value, an empty one, or both in
+  headers of one name fail the send before anything goes out.
+
 ## 1.6.0
 
 - `email->send()`, each message of `email->sendBatch()` and

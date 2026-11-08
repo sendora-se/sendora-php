@@ -37,9 +37,12 @@ use Symfony\Component\Mime\MessageConverter;
  * where each recipient shows. Symfony's `TagHeader`, or `X-Sendora-Tag`,
  * gives the tag, and each `MetadataHeader`, or `X-Sendora-Metadata-<key>`,
  * an entry of the metadata. `X-Sendora-Stream` picks the stream, and
- * `X-Sendora-Idempotency-Key` the send's idempotency key. Reply-To, the
- * thread's and the unsubscribe headers and every other `X-` header pass
- * on. After a send, the sent message's `getMessageId()` is Sendora's id.
+ * `X-Sendora-Idempotency-Key` the send's idempotency key.
+ * `X-Sendora-Track-Opens` and `X-Sendora-Track-Links`, `true` or `false`,
+ * switch tracking on or off for the message, whatever its stream's
+ * switches say. Reply-To, the thread's and the unsubscribe headers and
+ * every other `X-` header pass on. After a send, the sent message's
+ * `getMessageId()` is Sendora's id.
  */
 final class SendoraTransport extends AbstractTransport
 {

@@ -819,9 +819,15 @@ message maps to a send this way:
 | `MetadataHeader` and `X-Sendora-Metadata-<key>`                                             | `metadata`, `X-Sendora-Metadata-` winning a tie   |
 | `X-Sendora-Stream`, or else the DSN's `stream`                                              | `streamId`                                        |
 | `X-Sendora-Idempotency-Key`                                                                 | `idempotencyKey`, or else a new key for each send |
+| `X-Sendora-Track-Opens`, `true` or `false`                                                  | `trackOpens`; another value fails the send        |
+| `X-Sendora-Track-Links`, `true` or `false`                                                  | `trackLinks`; another value fails the send        |
 
 - Any other header, such as `Importance`, is left off, as over SMTP. The
   `X-Sendora-`, `X-Tag` and `X-Metadata-` headers never reach `headers`.
+- The two tracking headers switch tracking on or off for the message,
+  whatever its stream's switches say, as `email->send()`'s `trackOpens`
+  and `trackLinks` do. Their values ignore case. An empty value fails the
+  send, and so do both values in headers of one name.
 - The envelope decides who gets the message, as over SMTP. A recipient
   that a listener adds, such as Symfony's `EnvelopeListener` redirecting
   a staging app's mail, goes to `to`. A Cc or Bcc address that the

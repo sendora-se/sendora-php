@@ -39,6 +39,8 @@ use Symfony\Component\Mime\Part\TextPart;
  *     tag: null|string,
  *     metadata: array<array-key, string>,
  *     idempotencyKey: null|string,
+ *     trackOpens: null|bool,
+ *     trackLinks: null|bool,
  * }
  */
 final class MailerMapping
@@ -53,12 +55,14 @@ final class MailerMapping
     private const METADATA_PREFIXES = ['X-Metadata-', 'X-Sendora-Metadata-'];
     private const STREAM_HEADER = 'X-Sendora-Stream';
     private const IDEMPOTENCY_HEADER = 'X-Sendora-Idempotency-Key';
+    private const TRACK_OPENS_HEADER = 'X-Sendora-Track-Opens';
+    private const TRACK_LINKS_HEADER = 'X-Sendora-Track-Links';
     private const MAX_HEADER_VALUE = 998;
 
     /**
      * @return SendArguments
      *
-     * @throws TransportException the message cannot be one send: it has two From addresses or two different tags, or text in a charset PHP cannot convert
+     * @throws TransportException the message cannot be one send: it has two From addresses or two different tags, a tracking header that is not `true` or `false` or is both, or text in a charset PHP cannot convert
      */
     public static function arguments(
         #[\SensitiveParameter]
@@ -84,6 +88,8 @@ final class MailerMapping
             'tag' => self::tag($headers),
             'metadata' => self::metadata($headers),
             'idempotencyKey' => self::first($headers, self::IDEMPOTENCY_HEADER),
+            'trackOpens' => self::tracking($headers, self::TRACK_OPENS_HEADER),
+            'trackLinks' => self::tracking($headers, self::TRACK_LINKS_HEADER),
         ];
     }
 
@@ -381,6 +387,30 @@ final class MailerMapping
         }
 
         return $metadata;
+    }
+
+    /**
+     * An empty value throws, as over SMTP, though an empty tag counts as
+     * none: PHP writes `false` as an empty string, and dropping the header
+     * would leave the stream's switch to decide.
+     *
+     * @throws TransportException
+     */
+    private static function tracking(#[\SensitiveParameter] Headers $headers, string $name): ?bool
+    {
+        $values = [];
+        foreach (self::all($headers, $name) as $header) {
+            $values[] = \strtolower(self::value($header));
+        }
+        $values = \array_unique($values);
+        if (\array_diff($values, ['true', 'false']) !== []) {
+            throw new TransportException("{$name} is true or false, and this message gives another value.");
+        }
+        if (\count($values) > 1) {
+            throw new TransportException("{$name} is true or false, and this message gives both.");
+        }
+
+        return $values === [] ? null : \in_array('true', $values, true);
     }
 
     /** The first value of the headers of a name, an empty one counting as none. */
