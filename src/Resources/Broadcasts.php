@@ -84,6 +84,8 @@ class Broadcasts
      * @param null|string $tag a label of up to 100 characters, on the broadcast and every message
      * @param null|array<array-key, string> $metadata up to 20 pairs of your own, on the broadcast and every message, their keys sent as given
      * @param null|string $idempotencyKey 1 to 255 characters naming this broadcast, none of them a control character or beyond U+00FF. The API keeps a key for 24 hours. Give your own to repeat a broadcast safely from another process.
+     * @param null|bool $trackOpens whether the opens of every message are tracked, whatever the stream's switch says; the stream decides when left out. `true` throws `tracking_not_confirmed` until an administrator has first switched tracking on in the dashboard, and `tracking_unavailable` where tracking is not open to the account.
+     * @param null|bool $trackLinks whether the links of every message are tracked, whatever the stream's switch says; the stream decides when left out. `true` is refused as for `trackOpens`.
      *
      * @throws SendoraException the broadcast was refused or failed; its `idempotencyKey` is the key it went under, for repeating it later
      * @throws InvalidArgumentException an argument cannot be sent; nothing was sent
@@ -108,6 +110,8 @@ class Broadcasts
         #[\SensitiveParameter]
         ?array $metadata = null,
         ?string $idempotencyKey = null,
+        ?bool $trackOpens = null,
+        ?bool $trackLinks = null,
     ): AcceptedBroadcast {
         $key = Idempotency::keyFor($idempotencyKey);
         $body = Wire::body([
@@ -121,6 +125,8 @@ class Broadcasts
             'attachments' => $attachments,
             'tag' => $tag,
             'metadata' => $metadata,
+            'trackOpens' => $trackOpens,
+            'trackLinks' => $trackLinks,
         ]);
 
         return $this->caller->json(

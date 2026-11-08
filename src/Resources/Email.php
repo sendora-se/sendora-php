@@ -37,6 +37,8 @@ use Sendora\Types\BatchResult;
  *     attachments?: null|list<EmailAttachment>,
  *     tag?: null|string,
  *     metadata?: null|array<array-key, string>,
+ *     trackOpens?: null|bool,
+ *     trackLinks?: null|bool,
  * }
  *
  * @final
@@ -82,6 +84,8 @@ class Email
      * @param null|string $tag a label of up to 100 characters, returned with the message and its events
      * @param null|array<array-key, string> $metadata up to 20 pairs of your own, returned with the message and its events, their keys sent as given
      * @param null|string $idempotencyKey 1 to 255 characters naming this send, none of them a control character or beyond U+00FF. The API keeps a key for 24 hours. The same key with the same message answers the first send again, and with another message is refused. Give your own to repeat a send safely from another process.
+     * @param null|bool $trackOpens whether the message's opens are tracked, whatever its stream's switch says; the stream decides when left out. `true` throws `tracking_not_confirmed` until an administrator has first switched tracking on in the dashboard, and `tracking_unavailable` where tracking is not open to the account.
+     * @param null|bool $trackLinks whether the message's links are tracked, whatever its stream's switch says; the stream decides when left out. `true` is refused as for `trackOpens`.
      *
      * @throws SendoraException the send was refused or failed; its `idempotencyKey` is the key it went under, for repeating it later
      * @throws InvalidArgumentException an argument cannot be sent; nothing was sent
@@ -110,6 +114,8 @@ class Email
         #[\SensitiveParameter]
         ?array $metadata = null,
         ?string $idempotencyKey = null,
+        ?bool $trackOpens = null,
+        ?bool $trackLinks = null,
     ): AcceptedEmail {
         $key = Idempotency::keyFor($idempotencyKey);
         $body = Wire::body([
@@ -125,6 +131,8 @@ class Email
             'attachments' => $attachments,
             'tag' => $tag,
             'metadata' => $metadata,
+            'trackOpens' => $trackOpens,
+            'trackLinks' => $trackLinks,
         ]);
 
         return $this->caller->json(

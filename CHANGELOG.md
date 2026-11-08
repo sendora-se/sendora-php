@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.6.0
+
+- `email->send()`, each message of `email->sendBatch()` and
+  `broadcasts->send()` take `trackOpens` and `trackLinks`, which switch
+  tracking on or off for that mail whatever its stream's switches say.
+- Each `Stream` has `trackOpens` and `trackLinks`, its tracking switches,
+  which an administrator moves in the dashboard.
+- Two error codes, `ErrorCode::TrackingNotConfirmed` and
+  `ErrorCode::TrackingUnavailable`, for a `true` before the account's first
+  switch in the dashboard and where tracking is not open to the account.
+
 ## 1.5.1
 
 - The README no longer says that tracking is not open to accounts. It says

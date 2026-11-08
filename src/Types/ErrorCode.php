@@ -21,6 +21,8 @@ enum ErrorCode: string
     case PaymentRequired = 'payment_required';
     case AccountPaused = 'account_paused';
     case AccountNotActive = 'account_not_active';
+    case TrackingUnavailable = 'tracking_unavailable';
+    case TrackingNotConfirmed = 'tracking_not_confirmed';
     case SpamComplaintLocked = 'spam_complaint_locked';
     case UnsubscribeLocked = 'unsubscribe_locked';
     case NotFound = 'not_found';

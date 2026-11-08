@@ -24,6 +24,8 @@ final readonly class Stream implements \JsonSerializable
      * @param null|\DateTimeImmutable $pausedAt when Sendora paused it after complaints; it takes no messages until support resumes it
      * @param null|string $inboundAddress an inbound stream's address; `null` on every other kind
      * @param null|int $contentRetentionDays how many days an inbound stream keeps received content, 1 to 30; `null` for the default of 30, and on every other kind
+     * @param bool $trackOpens whether the opens of its mail are tracked, unless a message sets `trackOpens`; an administrator switches it in the dashboard, and it is always `false` on an inbound stream
+     * @param bool $trackLinks whether the links in its mail are tracked, unless a message sets `trackLinks`; an administrator switches it in the dashboard, and it is always `false` on an inbound stream
      */
     public function __construct(
         public string $streamId,
@@ -36,6 +38,8 @@ final readonly class Stream implements \JsonSerializable
         public ?\DateTimeImmutable $pausedAt,
         public ?string $inboundAddress,
         public ?int $contentRetentionDays,
+        public bool $trackOpens,
+        public bool $trackLinks,
         private ?JsonObject $json = null,
     ) {}
 
@@ -52,6 +56,8 @@ final readonly class Stream implements \JsonSerializable
             pausedAt: Json::nullableTime($json, 'pausedAt'),
             inboundAddress: Json::nullableString($json, 'inboundAddress'),
             contentRetentionDays: Json::nullableInt($json, 'contentRetentionDays'),
+            trackOpens: Json::bool($json, 'trackOpens'),
+            trackLinks: Json::bool($json, 'trackLinks'),
             json: $json,
         );
     }

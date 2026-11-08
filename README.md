@@ -97,6 +97,12 @@ for 24 hours and refuses it with a different body
 (`idempotency_key_mismatch`). An exception from a send carries the key it
 went under as `$error->idempotencyKey`.
 
+A message's `trackOpens:` and `trackLinks:` switch tracking on or off for
+that message, whatever its stream's switches say. Left out, the stream
+decides. `true` throws `tracking_not_confirmed` until an administrator has
+first switched tracking on in the dashboard. Where tracking is not open to
+the account, it throws `tracking_unavailable`.
+
 A batch never throws for one refused message. Each result is an
 `AcceptedBatchItem` with the `messageId`, or a `RefusedBatchItem` with
 the `errorCode` and fields that a single send would throw. Both have
@@ -154,6 +160,7 @@ Where mail is tracked, each `MessageRecipient` has `tracked`, `opens`,
 `clicks`, `firstOpenAt` and `firstHumanOpenAt`. `messages->get()` adds
 `tracking`, and its timeline holds `Open` and `Click` events with their
 labels. An administrator switches tracking on for a stream in the dashboard.
+A message's own `trackOpens` and `trackLinks` win over the stream's.
 
 The filters of `inbound->search()` are `streamId`, and `from`, the
 sender's address. `recipient` is the address of yours that the mail went
@@ -182,7 +189,8 @@ Every message goes on a stream of its server. A server starts with a
 default transactional stream, and the account adds more: transactional
 and broadcast ones, and one inbound stream, which receives mail at its
 `inboundAddress` instead of sending. Each sending stream has a
-suppression list of its own.
+suppression list of its own. Its `trackOpens` and `trackLinks` show its
+tracking switches, which an administrator moves in the dashboard.
 
 | Call                                                                 | Returns                                                                                                            |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -222,6 +230,9 @@ idempotency key, so a retry returns the same broadcast.
 A message's `substitutions`, up to 20 strings, replace `{{ key }}` in
 the subject, the text and the HTML, escaped in the HTML. A key that the
 content names and a message lacks throws `substitution_missing`.
+
+A broadcast's `trackOpens:` and `trackLinks:` apply to every message, as a
+send's do.
 
 | Call                                         | Returns                                                                                |
 | -------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -629,6 +640,8 @@ try {
 | `payment_required`                | 402    | The first payment has not arrived, an invoice is unpaid, payment is paused, or the subscription has ended. |
 | `account_paused`                  | 403    | Sendora has paused the account.                                                                            |
 | `account_not_active`              | 403    | The account is not approved to send, or not active for an inbound stream.                                  |
+| `tracking_unavailable`            | 403    | A message asked for tracking, and tracking is not open to the account.                                     |
+| `tracking_not_confirmed`          | 409    | A message asked for tracking before an administrator first switched it on in the dashboard.                |
 | `spam_complaint_locked`           | 403    | Only support can lift a spam-complaint suppression.                                                        |
 | `unsubscribe_locked`              | 403    | Only support can lift a recipient's own unsubscribe.                                                       |
 | `not_found`                       | 404    | No such id on this server, or no such suppressed or not-tracked address.                                   |
