@@ -906,8 +906,11 @@ process can refuse one at startup.
 
 Addresses at `simulator.sendora.se` (`hardbounce@`, `softbounce@`,
 `deferred@`, `complaint@`, with any `+label`) produce those outcomes,
-and any other address is marked delivered. A server's mode is fixed
-when it is created, so going live means a new server and a new key.
+and any other address is marked delivered. Where the message's tracking
+is on, `opened@` is also opened 5 seconds after its delivery, and
+`clicked@` then clicked on its first tracked link 5 seconds later. A
+server's mode is fixed when it is created, so going live means a new
+server and a new key.
 Test mail is free and counts against its own monthly cap, shared by the
 account's test servers.
 

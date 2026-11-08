@@ -38,10 +38,11 @@ reference: every call, every error code and every event is in it.
   `sk_test_`, and `Keys::isTestKey($token)` tells them apart at startup.
   Addresses at `simulator.sendora.se` (`hardbounce@`, `softbounce@`,
   `deferred@`, `complaint@`) produce those outcomes on a test server and
-  are refused on a live one (`test_address_on_live_server`). A server's
-  mode never changes. For unit tests, pass `httpClient:` a fake PSR-18
-  client, such as Symfony's `MockHttpClient` inside a `Psr18Client`, or
-  double a resource class with `createMock()`.
+  are refused on a live one (`test_address_on_live_server`). Where the
+  message's tracking is on, `opened@` adds an open and `clicked@` an open
+  and a click. A server's mode never changes. For unit tests, pass
+  `httpClient:` a fake PSR-18 client, such as Symfony's `MockHttpClient`
+  inside a `Psr18Client`, or double a resource class with `createMock()`.
 - Arguments are named, with the API's camelCase names. The ids of a path
   come first, by position, and every other argument is named. Do not
   build request bodies by hand or call curl yourself.

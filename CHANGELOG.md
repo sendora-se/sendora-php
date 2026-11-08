@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.1
+
+- The README and the skill say that `opened@` and
+  `clicked@simulator.sendora.se` act out an open and a click on a test
+  server's tracked mail. No call changes.
+
 ## 1.7.0
 
 - The mailer driver reads `X-Sendora-Track-Opens` and `X-Sendora-Track-Links`
