@@ -42,17 +42,24 @@
         "shipmonk/composer-dependency-analyser": "^1.8",
         "symfony/event-dispatcher": "^6.4 || ^7.4 || ^8.0",
         "symfony/http-client": "^7.4 || ^8.0",
+        "symfony/http-foundation": "^6.4 || ^7.4 || ^8.0",
         "symfony/mailer": "^6.4.40 || ^7.4.12 || ^8.0.12",
+        "symfony/messenger": "^6.4 || ^7.4 || ^8.0",
         "symfony/mime": "^6.4.49 || ^7.4.22 || ^8.1.10",
-        "symfony/var-dumper": "^7.4 || ^8.0"
+        "symfony/remote-event": "^6.4 || ^7.4 || ^8.0",
+        "symfony/var-dumper": "^7.4 || ^8.0",
+        "symfony/webhook": "^6.4 || ^7.4 || ^8.0"
     },
     "conflict": {
-        "symfony/mailer": "<6.4"
+        "symfony/mailer": "<6.4",
+        "symfony/remote-event": "<6.4",
+        "symfony/webhook": "<6.4"
     },
     "suggest": {
         "psr/http-client-implementation": "To send through a PSR-18 HTTP client of your own, such as one with a proxy or a private CA",
         "psr/log-implementation": "To log each retry through a PSR-3 logger",
-        "symfony/mailer": "To send Symfony's and Laravel's mail through Sendora's API with SendoraTransport"
+        "symfony/mailer": "To send Symfony's and Laravel's mail through Sendora's API with SendoraTransport",
+        "symfony/webhook": "To receive Sendora's webhooks as Symfony's remote events with SendoraRequestParser"
     },
     "autoload": {
         "psr-4": {

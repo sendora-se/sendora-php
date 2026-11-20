@@ -112,6 +112,13 @@ reference: every call, every error code and every event is in it.
   `MAILER_DSN=sendora+api://KEY@default`, once `SendoraTransportFactory`
   is registered as the README shows. Symfony's `TagHeader` and
   `MetadataHeader` become the tag and the metadata.
+- In a Symfony app, take webhooks with Symfony's Webhook component:
+  register `Sendora\Mailer\Webhook\SendoraRequestParser` and route a type
+  to it under `framework.webhook.routing`, with the webhook's secret, as
+  the README shows. It checks the signature, so verify nothing again in
+  the consumer. The events about a message arrive as
+  `MailerDeliveryEvent` and `MailerEngagementEvent`, and every other one,
+  `inbound` among them, as a `RemoteEvent` named after it.
 - In a Laravel app, install `sendora/sendora-laravel`, which installs
   this package. `MAIL_MAILER=sendora` sends Laravel's mail, the clients
   come from the container, and the package's route checks each webhook
@@ -148,6 +155,6 @@ try {
 ## Where to read more
 
 - The README of this package: every method, every error code, retries,
-  webhooks and events, the Symfony Mailer transport, testing, logging
-  and tracing.
+  webhooks and events, the Symfony Mailer transport, Symfony's webhook
+  parser, testing, logging and tracing.
 - The guides and the HTTP reference at https://sendora.se/docs.

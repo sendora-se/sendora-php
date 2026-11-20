@@ -13,6 +13,11 @@ In a Laravel app, install `sendora/sendora-laravel` instead. It installs
 this package, sends Laravel's mail with `MAIL_MAILER=sendora`, and takes
 webhooks on a route of its own, with a Laravel event for each.
 
+In a Symfony app, `SendoraTransport` sends the mailer's mail through the
+API, and `SendoraRequestParser` takes webhooks through Symfony's Webhook
+component. The sections "Symfony Mailer" and "Receiving in Symfony" show
+both.
+
 Two kinds of key, two clients. `Sendora` takes a server key (`sk_…`) and
 does everything inside one server: sending, broadcasts, the log, received
 mail, streams, suppressions, the not-tracked list, tokens, webhooks and the server's own limits.
@@ -481,6 +486,94 @@ every delivery. Then delete the old one. A signature older than five
 minutes is refused (`stale_signature`), and `tolerance:` changes the
 limit. A wrong one throws `invalid_signature`, and a missing or empty
 secret throws `InvalidArgumentException`.
+
+### Receiving in Symfony
+
+`SendoraRequestParser` lets Symfony's Webhook component take Sendora's
+deliveries, so each one reaches your app as a remote event. Install
+`symfony/webhook`, from 6.4 to 8.x, beside the SDK. Its Flex recipe adds
+the route `/webhook/{type}`. Without Flex, import
+`@FrameworkBundle/Resources/config/routing/webhook.php` under the prefix
+`/webhook`, or `webhook.xml` before Symfony 7.3.
+
+Register the parser as a service, and route the type `sendora` to it with
+the webhook's signing secret:
+
+```yaml
+# config/services.yaml
+services:
+    Sendora\Mailer\Webhook\SendoraRequestParser: ~
+```
+
+```yaml
+# config/packages/webhook.yaml
+framework:
+    webhook:
+        routing:
+            sendora:
+                service: Sendora\Mailer\Webhook\SendoraRequestParser
+                secret: '%env(SENDORA_WEBHOOK_SECRET)%'
+```
+
+Create the webhook with the https URL of your app's `/webhook/sendora`.
+A consumer of the type `sendora` then gets each event:
+
+```php
+use Symfony\Component\RemoteEvent\Attribute\AsRemoteEventConsumer;
+use Symfony\Component\RemoteEvent\Consumer\ConsumerInterface;
+use Symfony\Component\RemoteEvent\Event\Mailer\MailerDeliveryEvent;
+use Symfony\Component\RemoteEvent\RemoteEvent;
+
+#[AsRemoteEventConsumer('sendora')]
+final class SendoraConsumer implements ConsumerInterface
+{
+    public function consume(RemoteEvent $event): void
+    {
+        $payload = $event->getPayload();
+        if ($event instanceof MailerDeliveryEvent && $event->getName() === MailerDeliveryEvent::BOUNCE) {
+            error_log("{$event->getId()} bounced: {$event->getReason()}");
+        } elseif ($event->getName() === 'inbound' && is_string($payload['inboundMessageId'] ?? null)) {
+            error_log("{$payload['inboundMessageId']} arrived");
+        }
+    }
+}
+```
+
+The parser checks the signature as `WebhookVerifier::verify()` does. A
+missing, malformed, wrong or stale signature gets 400, and so does a
+signed body that is no event. A request that is not a POST gets 406.
+Sendora retries any answer but a 2xx. An empty secret throws `InvalidArgumentException`.
+The parser's `tolerance` argument, 300 seconds unless you set it, is how
+old a signature may be.
+
+| `event`          | Symfony's event         | `getName()`                        |
+| ---------------- | ----------------------- | ---------------------------------- |
+| `delivered`      | `MailerDeliveryEvent`   | `delivered`                        |
+| `bounced`        | `MailerDeliveryEvent`   | `bounce`                           |
+| `deferred`       | `MailerDeliveryEvent`   | `deferred`                         |
+| `spam_complaint` | `MailerEngagementEvent` | `spam`                             |
+| `unsubscribed`   | `MailerEngagementEvent` | `unsubscribe`                      |
+| `opened`         | `MailerEngagementEvent` | `open`                             |
+| `clicked`        | `MailerEngagementEvent` | `click`                            |
+| any other        | `RemoteEvent`           | the event's own, such as `inbound` |
+
+- A mailer event's `getId()` is Sendora's message id, the one that the
+  sent message's `getMessageId()` gives after a send through
+  `SendoraTransport`. `getDate()`, `getRecipientEmail()` and
+  `getMetadata()` are the event's. `getTags()` holds its tag, if it has
+  one.
+- A bounce's `getReason()` is the receiver's response, or else the
+  bounce's classification. A deferral's is the receiver's response.
+- Every other event is a `RemoteEvent` whose `getId()` is the delivery's
+  id. That covers `inbound`, the four cap events, `tracking_opted_out`
+  and any event newer than this release, which Symfony would otherwise
+  refuse with 406.
+- `getPayload()` is the delivery as Sendora sent it. Key your handling on
+  its `id`, since a delivery arrives at least once.
+- Symfony hands each event to its consumer through Messenger. To answer
+  each delivery at once, route
+  `Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage` to
+  an async transport.
 
 ## The account: servers, keys, domains and erasures
 

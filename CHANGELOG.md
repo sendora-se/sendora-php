@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.0
+
+- `Sendora\Mailer\Webhook\SendoraRequestParser` takes Sendora's webhooks
+  in Symfony's Webhook component, from `symfony/webhook` 6.4 to 8.x. It
+  checks each delivery's signature.
+- The seven events about a message become Symfony's `MailerDeliveryEvent`
+  and `MailerEngagementEvent`, with Sendora's message id as their id.
+  Every other event becomes a `RemoteEvent` with its own name, so Symfony
+  accepts it rather than answer 406. No call changes.
+
 ## 1.7.1
 
 - The README and the skill say that `opened@` and
