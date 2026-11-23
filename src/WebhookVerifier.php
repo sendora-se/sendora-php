@@ -31,13 +31,19 @@ final class WebhookVerifier
     /** How old a signature may be, in seconds, either way. */
     public const TOLERANCE = 300;
 
-    /** What TypeScript's `trim()` strips in ASCII. PHP's own `trim()` also strips NUL and keeps a form feed. */
-    private const WHITESPACE = " \t\n\r\x0B\x0C";
+    /**
+     * What ECMAScript's `trim()` strips, as TypeScript does, in UTF-8. PHP's
+     * own `trim()` strips NUL too, and keeps a form feed and every character
+     * outside ASCII.
+     */
+    private const WHITESPACE = '(?:[\t-\r ]|\xC2\xA0|\xE1\x9A\x80|\xE2\x80[\x80-\x8A\xA8\xA9\xAF]|\xE2\x81\x9F|\xE3\x80\x80|\xEF\xBB\xBF)*+';
+
+    private const PART = '/\A' . self::WHITESPACE . '(t|v1)' . self::WHITESPACE . '=' . self::WHITESPACE . '(.*)\z/s';
 
     // \z, since PCRE's $ also matches before a final line break.
-    private const SECONDS = '/\A[0-9]{1,18}\z/';
+    private const SECONDS = '/\A[0-9]{1,18}' . self::WHITESPACE . '\z/';
 
-    private const MAC = '/\A[0-9a-fA-F]{64}\z/';
+    private const MAC = '/\A([0-9a-fA-F]{64})' . self::WHITESPACE . '\z/';
 
     /**
      * Verifies a delivery's signature and returns its event. Pass the body
@@ -114,25 +120,22 @@ final class WebhookVerifier
         if ($header === null || $header === '') {
             throw new WebhookVerificationException('The request carries no Sendora-Signature header.', ErrorCode::InvalidSignature->value);
         }
-        $timestamp = null;
+        $timestamp = '';
         $macs = [];
         foreach (\explode(',', $header) as $part) {
-            $pair = \explode('=', $part, 2);
-            if (\count($pair) !== 2) {
+            if (\preg_match(self::PART, $part, $pair) !== 1) {
                 continue;
             }
-            $name = \trim($pair[0], self::WHITESPACE);
-            $value = \trim($pair[1], self::WHITESPACE);
+            [, $name, $value] = $pair;
             if ($name === 't') {
                 $timestamp = $value;
-            } elseif ($name === 'v1') {
-                if (\preg_match(self::MAC, $value) !== 1) {
-                    throw self::malformed();
-                }
-                $macs[] = $value;
+            } elseif (\preg_match(self::MAC, $value, $mac) === 1) {
+                $macs[] = $mac[1];
+            } else {
+                throw self::malformed();
             }
         }
-        if ($timestamp === null || \preg_match(self::SECONDS, $timestamp) !== 1 || $macs === []) {
+        if (\preg_match(self::SECONDS, $timestamp) !== 1 || $macs === []) {
             throw self::malformed();
         }
 

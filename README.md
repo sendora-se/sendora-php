@@ -579,8 +579,8 @@ old a signature may be.
 ## The account: servers, keys, domains and erasures
 
 An account key (`ak_…`) manages the account and never sends. An
-administrator creates one in the dashboard under Account › API keys, and
-the account holds up to two live ones. `SendoraAccount` takes the same
+administrator creates one in the dashboard under Account › Account keys,
+and the account holds up to two live ones. `SendoraAccount` takes the same
 arguments as `Sendora`.
 
 ```php

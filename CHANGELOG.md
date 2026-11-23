@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.1
+
+- `WebhookVerifier::verify()` takes the same whitespace around a part of
+  the `Sendora-Signature` header as the other SDKs do, such as a no-break
+  space. Every header that Sendora sends verifies as before.
+- The README says that an administrator creates an account key under
+  Account › Account keys, the page's name in the dashboard. No call
+  changes.
+
 ## 1.9.0
 
 - A new error code, `daily_cap_reached`, with its `ErrorCode` case
