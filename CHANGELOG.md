@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.0
+
+- A new error code, `daily_cap_reached`, with its `ErrorCode` case
+  `DailyCapReached`. An account can have a daily cap, and the code means
+  that its live servers have sent all of the day's emails. It is a
+  `RateLimitException`, with `scope`, `cap`, `used` and `resetsAt`, and
+  is not retried.
+- A `ServerLimit`'s `period` can be `day`, the calendar day in UTC, with
+  the `LimitPeriod` case `Day`.
+- `payment_required` also means that the account's plan does not include
+  broadcasts.
+- `OwnServer`'s `inboundCap` is also `null` for an account whose plan
+  includes no received mail.
+
 ## 1.8.0
 
 - `Sendora\Mailer\Webhook\SendoraRequestParser` takes Sendora's webhooks

@@ -66,6 +66,7 @@ enum ErrorCode: string
     case IdempotencyKeyMismatch = 'idempotency_key_mismatch';
     case IdempotencyKeyRequired = 'idempotency_key_required';
     case RateLimited = 'rate_limited';
+    case DailyCapReached = 'daily_cap_reached';
     case MonthlyCapReached = 'monthly_cap_reached';
     case SendingDisabled = 'sending_disabled';
 

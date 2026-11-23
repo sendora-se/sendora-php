@@ -27,12 +27,12 @@ final readonly class RefusedBatchItem implements \JsonSerializable
      * @param list<SuppressedRecipient> $suppressed on `recipient_suppressed`, the suppressed recipients
      * @param null|string $streamId on `recipient_suppressed`, the stream whose list holds them
      * @param list<string> $addresses on `test_address_on_live_server`, the simulator's addresses
-     * @param null|string $scope on `rate_limited` and `monthly_cap_reached`, whose limit it is; `LimitScope` lists the values this release knows
+     * @param null|string $scope on `rate_limited`, `daily_cap_reached` and `monthly_cap_reached`, whose limit it is; `LimitScope` lists the values this release knows
      * @param null|int $limit on `rate_limited`, the messages allowed a minute
      * @param null|int $retryAfter on `rate_limited`, the seconds to wait
-     * @param null|int $cap on `monthly_cap_reached`, the messages allowed a month
-     * @param null|int $used on `monthly_cap_reached`, the messages sent this month
-     * @param null|\DateTimeImmutable $resetsAt on `monthly_cap_reached`, when the month ends and the count starts again, in UTC
+     * @param null|int $cap on `daily_cap_reached` and `monthly_cap_reached`, the messages allowed a day or a month
+     * @param null|int $used on `daily_cap_reached` and `monthly_cap_reached`, the messages sent that day or month
+     * @param null|\DateTimeImmutable $resetsAt on `daily_cap_reached` and `monthly_cap_reached`, when the day or the month ends and the count starts again, in UTC
      */
     public function __construct(
         public int $index,

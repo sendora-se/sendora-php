@@ -39,11 +39,11 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
      * @param string $errorCode what happened, as the API names it; `ErrorCode` lists the values this release knows
      * @param null|int $status the HTTP status, or `null` when no answer came
      * @param null|int $retryAfter seconds to wait before trying again, when the API said so
-     * @param null|string $scope whose limit or cap it is, on `rate_limited` and `monthly_cap_reached`
+     * @param null|string $scope whose limit or cap it is, on `rate_limited`, `daily_cap_reached` and `monthly_cap_reached`
      * @param null|int $limit the emails a minute allowed, on `rate_limited`
-     * @param null|int $cap the monthly cap, on `monthly_cap_reached`
-     * @param null|int $used what was used of the cap, on `monthly_cap_reached`
-     * @param null|\DateTimeImmutable $resetsAt when the month's count starts again, on `monthly_cap_reached`
+     * @param null|int $cap the daily or the monthly cap, on `daily_cap_reached` and `monthly_cap_reached`
+     * @param null|int $used what was used of the cap, on `daily_cap_reached` and `monthly_cap_reached`
+     * @param null|\DateTimeImmutable $resetsAt when the day's or the month's count starts again, on `daily_cap_reached` and `monthly_cap_reached`
      * @param null|int $max how many keys, secrets or servers may exist, on `token_limit`, `secret_limit` and `server_limit`
      * @param list<ValidationIssue> $issues one entry per field, on `invalid_request`
      * @param list<SuppressedRecipient> $suppressed the recipients refused, on `recipient_suppressed`
