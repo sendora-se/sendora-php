@@ -312,23 +312,19 @@ $sendora->trackingOptOuts->add(address: 'anna@example.com');
 
 ## Tokens
 
-The server's own keys, from its own key. Every key of a server has the
-same rights, and its value is shown once, when it is created. A server
-holds up to two live keys, and a third is `token_limit`. The account key
-manages the same keys under `$account->servers->tokens`.
+The server's own keys, read with any of them. Every key of a server has the
+same rights. The account key creates and revokes them, under
+`$account->servers->tokens`. So does a person, in the dashboard.
 
-| Call                                 | Returns                                              |
-| ------------------------------------ | ---------------------------------------------------- |
-| `$sendora->tokens->create(name:)`    | `CreatedToken` with its `token` value, once          |
-| `$sendora->tokens->list()`           | `TokenList` with `tokens`, revoked ones included     |
-| `$sendora->tokens->get($tokenId)`    | One token, without its value                         |
-| `$sendora->tokens->revoke($tokenId)` | Nothing; the last live key is refused (`last_token`) |
+| Call                              | Returns                                          |
+| --------------------------------- | ------------------------------------------------ |
+| `$sendora->tokens->list()`        | `TokenList` with `tokens`, revoked ones included |
+| `$sendora->tokens->get($tokenId)` | One token, without its value                     |
 
-A key's value is kept out of `var_dump()`, `print_r()` and `json_encode()`
-of the answer, so a logged answer does not show it. Read it from
-`->token`. `toArray()`, `var_export()` and Symfony's `dump()`, which
-Laravel's `dd()` uses, still show it. A webhook's secret is kept the same
-way.
+`$sendora->tokens->create(name:)` and `$sendora->tokens->revoke($tokenId)`
+are deprecated, and go in the next major version. The API refuses both with
+`wrong_token_kind`. A stolen server key can then neither make another key nor
+revoke its owner's.
 
 ## The server
 
@@ -610,6 +606,12 @@ one, switch to it, and revoke the old one.
 | `$account->servers->tokens->get($serverId, $tokenId)`    | One key, without its value                                                           |
 | `$account->servers->tokens->revoke($serverId, $tokenId)` | Nothing; the last live key is refused (`last_token`)                                 |
 
+A key's value is kept out of `var_dump()`, `print_r()` and `json_encode()`
+of the answer, so a logged answer does not show it. Read it from
+`->token`. `toArray()`, `var_export()` and Symfony's `dump()`, which
+Laravel's `dd()` uses, still show it. A webhook's secret is kept the same
+way.
+
 Sending domains belong to the account, and every server sends from them.
 A domain sends once both DNS records are seen. A lookup that fails at the
 resolver (`dns_error`) changes nothing. A verified domain whose record
@@ -825,7 +827,7 @@ you to schedule. No other failure is retried, so `daily_cap_reached` and
 A call that creates something is repeated only after a `rate_limited` or
 `sending_disabled` answer. It is never repeated after a lost connection
 or a server error, so nothing is created twice. These calls are
-`streams->create()`, `tokens->create()`, `webhooks->create()`,
+`streams->create()`, `webhooks->create()`,
 `webhooks->createSecret()`, `webhooks->replay()`,
 `inboundDomains->create()`, `servers->create()`,
 `servers->tokens->create()`, `domains->create()` and `trackingDomains->create()`.

@@ -65,7 +65,7 @@ final class Sendora
     /** Reads each stream's suppression list, and lifts an entry from one. */
     public readonly Suppressions $suppressions;
 
-    /** Creates, reads and revokes the server's keys. */
+    /** Reads the server's keys. */
     public readonly Tokens $tokens;
 
     /** Reads the server's not-tracked list, adds an address to it and removes one. */

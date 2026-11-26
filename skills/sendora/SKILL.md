@@ -32,6 +32,10 @@ reference: every call, every error code and every event is in it.
   and `new Sendora($token)` sends with it. A server or the account holds
   at most two live keys. So rotate by creating the new key, switching to
   it, then revoking the old one. The last live key can never be revoked.
+  The account key creates and revokes a server's keys
+  (`$account->servers->tokens`). A server key only reads them
+  (`$sendora->tokens->list()` and `->get()`). Its `tokens->create()` and
+  `tokens->revoke()` are deprecated and refused (`wrong_token_kind`).
 - For tests and CI, use a test server:
   `$account->servers->create(name: ..., mode: 'test')`. It accepts, logs
   and fires webhooks like a live one but delivers nothing. Its keys start

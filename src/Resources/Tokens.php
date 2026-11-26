@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sendora\Resources;
 
-use Sendora\Exception\ConflictException;
 use Sendora\Exception\InvalidArgumentException;
 use Sendora\Exception\NotFoundException;
+use Sendora\Exception\PermissionDeniedException;
 use Sendora\Exception\SendoraException;
 use Sendora\Internal\Call;
 use Sendora\Internal\Caller;
@@ -17,8 +17,8 @@ use Sendora\Types\Token;
 use Sendora\Types\TokenList;
 
 /**
- * Creates, reads and revokes the keys of the key's own server. Every key
- * of a server has the same rights.
+ * Reads the keys of the key's own server. Every key of a server has the
+ * same rights.
  *
  * @final
  */
@@ -30,19 +30,11 @@ class Tokens
     ) {}
 
     /**
-     * Creates another key and returns its value, shown this once. A server
-     * holds at most two live keys, so a rotation is create, switch,
-     * revoke. A create is never repeated after a lost connection, which may
-     * have created the key.
-     *
-     * ```php
-     * $created = $sendora->tokens->create(name: 'Fakturasystemet');
-     * $vault->store('sendora', $created->token);
-     * ```
+     * @deprecated The API refuses it, so that a stolen key makes no other. Create a key with `servers->tokens->create()` of `SendoraAccount`, or in the dashboard.
      *
      * @param string $name 1 to 100 characters, for people to tell keys apart
      *
-     * @throws ConflictException the server holds two live keys (`token_limit`)
+     * @throws PermissionDeniedException always (`wrong_token_kind`)
      * @throws SendoraException the call failed
      * @throws InvalidArgumentException an argument cannot be sent; nothing was sent
      */
@@ -93,16 +85,9 @@ class Tokens
     }
 
     /**
-     * The key stops working at once. The server's last live key cannot be
-     * revoked, so a server is never locked out. A revoke repeated after a
-     * lost answer whose first attempt took effect throws `not_found`.
+     * @deprecated The API refuses it, so that a stolen key locks nobody out. Revoke a key with `servers->tokens->revoke()` of `SendoraAccount`, or in the dashboard.
      *
-     * ```php
-     * $sendora->tokens->revoke($tokenId);
-     * ```
-     *
-     * @throws ConflictException it is the server's last live key (`last_token`)
-     * @throws NotFoundException no key of this server has the id
+     * @throws PermissionDeniedException always (`wrong_token_kind`)
      * @throws SendoraException the call failed
      * @throws InvalidArgumentException the id is empty, `.` or `..`; nothing was sent
      */

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0
+
+- `tokens->create()` and `tokens->revoke()` of `Sendora` are deprecated,
+  since no server key creates or revokes a key any more. The API refuses
+  both with `wrong_token_kind`, whatever the package's version. Use
+  `servers->tokens` of `SendoraAccount`, or the dashboard.
+
 ## 1.10.0
 
 - Two new error codes, each a `ConflictException` with `max`.
