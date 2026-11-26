@@ -10,5 +10,5 @@ namespace Sendora;
  */
 final class Version
 {
-    public const VERSION = '1.9.1';
+    public const VERSION = '1.10.0';
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.0
+
+- Two new error codes, each a `ConflictException` with `max`.
+  `unverified_domain_limit`, the `ErrorCode` case `UnverifiedDomainLimit`,
+  means that the account has as many unverified domains as it may.
+  `webhook_limit`, the case `WebhookLimit`, means that the server has as
+  many webhooks as it may.
+
 ## 1.9.1
 
 - `WebhookVerifier::verify()` takes the same whitespace around a part of

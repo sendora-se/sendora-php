@@ -42,7 +42,7 @@ class Domains
      *
      * @param string $domain the domain that mail is sent from, such as `example.se`
      *
-     * @throws ConflictException the account has the domain (`domain_exists`, with `existingId`)
+     * @throws ConflictException the account has the domain (`domain_exists`, with `existingId`), or as many unverified ones as it may (`unverified_domain_limit`, with `max`)
      * @throws SendoraException the call failed
      * @throws InvalidArgumentException an argument cannot be sent; nothing was sent
      */

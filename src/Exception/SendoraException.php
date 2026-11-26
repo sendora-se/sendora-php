@@ -44,7 +44,7 @@ class SendoraException extends \RuntimeException implements ExceptionInterface
      * @param null|int $cap the daily or the monthly cap, on `daily_cap_reached` and `monthly_cap_reached`
      * @param null|int $used what was used of the cap, on `daily_cap_reached` and `monthly_cap_reached`
      * @param null|\DateTimeImmutable $resetsAt when the day's or the month's count starts again, on `daily_cap_reached` and `monthly_cap_reached`
-     * @param null|int $max how many keys, secrets or servers may exist, on `token_limit`, `secret_limit` and `server_limit`
+     * @param null|int $max how many keys, secrets, servers, webhooks or unverified domains may exist, on `token_limit`, `secret_limit`, `server_limit`, `webhook_limit` and `unverified_domain_limit`
      * @param list<ValidationIssue> $issues one entry per field, on `invalid_request`
      * @param list<SuppressedRecipient> $suppressed the recipients refused, on `recipient_suppressed`
      * @param null|string $streamId the stream whose list refused them, on `recipient_suppressed`

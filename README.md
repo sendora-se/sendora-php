@@ -740,6 +740,7 @@ try {
 | `unsubscribe_locked`              | 403    | Only support can lift a recipient's own unsubscribe.                                                                                                       |
 | `not_found`                       | 404    | No such id on this server, or no such suppressed or not-tracked address.                                                                                   |
 | `domain_exists`                   | 409    | The account already has the domain; `existingId` names it.                                                                                                 |
+| `unverified_domain_limit`         | 409    | The account has as many unverified domains as it may; `max` says how many.                                                                                 |
 | `domain_reserved`                 | 400    | The name is Sendora's own; no account can receive on it.                                                                                                   |
 | `tracking_domain_exists`          | 409    | The account already has the host, or one on that sending domain; `existingId` names it.                                                                    |
 | `tracking_domain_limit`           | 409    | The account has as many tracking domains as it may.                                                                                                        |
@@ -748,6 +749,7 @@ try {
 | `tracking_host_taken`             | 409    | Another account holds the host.                                                                                                                            |
 | `inbound_domain_exists`           | 409    | The stream already has a domain (`existingId` names it), or another account holds the name verified.                                                       |
 | `webhook_exists`                  | 409    | The server already has a webhook for that URL; `existingId` names it.                                                                                      |
+| `webhook_limit`                   | 409    | The server has as many webhooks as it may; `max` says how many.                                                                                            |
 | `stream_exists`                   | 409    | The server already has a stream with that name; `existingId` names it.                                                                                     |
 | `inbound_stream_exists`           | 409    | The server already has a live inbound stream; `existingId` names it.                                                                                       |
 | `default_stream`                  | 409    | The default stream cannot be archived.                                                                                                                     |

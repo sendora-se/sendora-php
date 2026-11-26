@@ -28,6 +28,7 @@ enum ErrorCode: string
     case NotFound = 'not_found';
     case DomainExists = 'domain_exists';
     case DomainReserved = 'domain_reserved';
+    case UnverifiedDomainLimit = 'unverified_domain_limit';
     case InboundDomainExists = 'inbound_domain_exists';
     case TrackingDomainExists = 'tracking_domain_exists';
     case TrackingDomainLimit = 'tracking_domain_limit';
@@ -35,6 +36,7 @@ enum ErrorCode: string
     case TrackingHostNotVerified = 'tracking_host_not_verified';
     case TrackingHostTaken = 'tracking_host_taken';
     case WebhookExists = 'webhook_exists';
+    case WebhookLimit = 'webhook_limit';
     case StreamExists = 'stream_exists';
     case InboundStreamExists = 'inbound_stream_exists';
     case DefaultStream = 'default_stream';

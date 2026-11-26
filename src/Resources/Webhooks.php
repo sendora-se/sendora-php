@@ -54,7 +54,7 @@ class Webhooks
      * @param null|string $streamId the one stream whose message events it receives; every stream when left out. Events about usage arrive either way
      * @param null|string $inboundContent how the `inbound` event carries a received message, as `InboundContent` lists them; `full` when left out
      *
-     * @throws ConflictException the server has a webhook for the URL (`webhook_exists`, with `existingId`)
+     * @throws ConflictException the server has a webhook for the URL (`webhook_exists`, with `existingId`), or as many as it may (`webhook_limit`, with `max`)
      * @throws UnprocessableEntityException no stream of this server has the id (`stream_not_found`)
      * @throws SendoraException the call failed
      * @throws InvalidArgumentException an argument cannot be sent; nothing was sent
